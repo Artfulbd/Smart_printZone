@@ -80,12 +80,12 @@
             // listBox1
             // 
             this.listBox1.BackColor = System.Drawing.SystemColors.Info;
-            this.listBox1.Font = new System.Drawing.Font("Rockwell", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 37;
+            this.listBox1.ItemHeight = 38;
             this.listBox1.Location = new System.Drawing.Point(721, 61);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(673, 374);
+            this.listBox1.Size = new System.Drawing.Size(673, 346);
             this.listBox1.TabIndex = 1;
             // 
             // mainForm
@@ -103,7 +103,7 @@
             this.MaximizeBox = false;
             this.Name = "mainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Smart Priner";
+            this.Text = "Smart Printer";
             this.panelDrop.ResumeLayout(false);
             this.panelDrop.PerformLayout();
             this.ResumeLayout(false);
