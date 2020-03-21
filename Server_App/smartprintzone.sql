@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2020 at 06:10 PM
+-- Generation Time: Mar 21, 2020 at 11:39 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.10
 
@@ -67,7 +67,7 @@ INSERT INTO `printdata` (`nsuId`, `fileName`, `reqType`) VALUES
 --
 
 CREATE TABLE `student` (
-  `nsuId` int(11) DEFAULT NULL,
+  `nsuId` int(11) NOT NULL,
   `studentName` varchar(255) DEFAULT NULL,
   `rfidNo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -97,6 +97,57 @@ INSERT INTO `student` (`nsuId`, `studentName`, `rfidNo`) VALUES
 (1721277058, 'Chloe', 'abcd58'),
 (1721277059, 'Claire', 'abcd59'),
 (1722231042, 'Artful', 'abcd60');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trace`
+--
+
+CREATE TABLE `trace` (
+  `id` int(11) NOT NULL,
+  `pgCount` int(11) NOT NULL,
+  `accntStatus` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `printdata`
+--
+ALTER TABLE `printdata`
+  ADD KEY `nsuId` (`nsuId`);
+
+--
+-- Indexes for table `student`
+--
+ALTER TABLE `student`
+  ADD PRIMARY KEY (`nsuId`),
+  ADD UNIQUE KEY `nsuId` (`nsuId`);
+
+--
+-- Indexes for table `trace`
+--
+ALTER TABLE `trace`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `printdata`
+--
+ALTER TABLE `printdata`
+  ADD CONSTRAINT `printdata_ibfk_1` FOREIGN KEY (`nsuId`) REFERENCES `student` (`nsuId`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `trace`
+--
+ALTER TABLE `trace`
+  ADD CONSTRAINT `trace_ibfk_1` FOREIGN KEY (`id`) REFERENCES `student` (`nsuId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
