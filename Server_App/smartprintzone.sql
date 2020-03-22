@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2020 at 11:39 AM
--- Server version: 10.4.8-MariaDB
--- PHP Version: 7.3.10
+-- Generation Time: Mar 22, 2020 at 07:21 AM
+-- Server version: 10.4.10-MariaDB
+-- PHP Version: 7.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -31,34 +31,19 @@ SET time_zone = "+00:00";
 CREATE TABLE `printdata` (
   `nsuId` int(11) DEFAULT NULL,
   `fileName` varchar(255) DEFAULT NULL,
-  `reqType` varchar(255) DEFAULT NULL
+  `available` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `printdata`
 --
 
-INSERT INTO `printdata` (`nsuId`, `fileName`, `reqType`) VALUES
-(1721277041, '1721277041_Lec.txt', 'online'),
-(1721277042, '1721277042_Lec.txt', 'offline'),
-(1721277043, '1721277043_Lec.txt', 'online'),
-(1721277044, '1721277044_Lec.txt', 'offline'),
-(1721277045, '1721277045_Lec.txt', 'online'),
-(1721277046, '1721277046_Lec.ppt', 'offline'),
-(1721277047, '1721277047_Lec.ppt', 'online'),
-(1721277048, '1721277048_Lec.ppt', 'offline'),
-(1721277049, '1721277049_Lec.ppt', 'online'),
-(1721277050, '1721277050_Lec.ppt', 'offline'),
-(1721277051, '1721277051_Lec.ppt', 'online'),
-(1721277052, '1721277052_Lec.ppt', 'offline'),
-(1721277053, '1721277053_Lec.ppt', 'online'),
-(1721277054, '1721277054_Lec.docx', 'offline'),
-(1721277055, '1721277055_Lec.docx', 'online'),
-(1721277056, '1721277056_Lec.docx', 'offline'),
-(1721277057, '1721277057_Lec.docx', 'online'),
-(1721277058, '1721277058_Lec.docx', 'offline'),
-(1721277059, '1721277059_Lec.docx', 'online'),
-(1722231042, '1721277060_Lec.docx', 'offline');
+INSERT INTO `printdata` (`nsuId`, `fileName`, `available`) VALUES
+(1721277041, '1721277041_Lec.txt', 1),
+(1721277042, '1721277042_Lec.txt', 1),
+(1721277043, '1721277043_Lec.txt', 1),
+(1721277059, '1721277059_Lec.docx', 1),
+(1722231042, '1721277060_Lec.docx', 1);
 
 -- --------------------------------------------------------
 
@@ -68,8 +53,8 @@ INSERT INTO `printdata` (`nsuId`, `fileName`, `reqType`) VALUES
 
 CREATE TABLE `student` (
   `nsuId` int(11) NOT NULL,
-  `studentName` varchar(255) DEFAULT NULL,
-  `rfidNo` varchar(255) DEFAULT NULL
+  `studentName` varchar(50) DEFAULT NULL,
+  `rfidNo` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -77,26 +62,12 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`nsuId`, `studentName`, `rfidNo`) VALUES
-(1721277041, 'Abigail', 'abcd41'),
-(1721277042, 'Amik', 'abcd42'),
-(1721277043, 'Alison', 'abcd43'),
-(1721277044, 'Amanda', 'abcd44'),
-(1721277045, 'Amelia', 'abcd45'),
-(1721277046, 'Amy', 'abcd46'),
-(1721277047, 'Andrea', 'abcd47'),
-(1721277048, 'Angela', 'abcd48'),
-(1721277049, 'Anna', 'abcd49'),
-(1721277050, 'Anne', 'abcd50'),
-(1721277051, 'Audrey', 'abcd51'),
-(1721277052, 'Ava', 'abcd52'),
-(1721277053, 'Bella', 'abcd53'),
-(1721277054, 'Bernadette', 'abcd54'),
-(1721277055, 'Carol', 'abcd55'),
-(1721277056, 'Caroline', 'abcd56'),
-(1721277057, 'Carolyn', 'abcd57'),
-(1721277058, 'Chloe', 'abcd58'),
-(1721277059, 'Claire', 'abcd59'),
-(1722231042, 'Artful', 'abcd60');
+(1721277041, 'Abigail', '1F5F7D4'),
+(1721277042, 'Amik', 'E6F8CF7'),
+(1721277043, 'Alison', '815BDD5'),
+(1721277059, 'Claire', '36817DF7'),
+(1722231042, 'Artful', '716C75D5'),
+(1722231043, 'Bob', '511ED5');
 
 -- --------------------------------------------------------
 
@@ -109,6 +80,18 @@ CREATE TABLE `trace` (
   `pgCount` int(11) NOT NULL,
   `accntStatus` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `trace`
+--
+
+INSERT INTO `trace` (`id`, `pgCount`, `accntStatus`) VALUES
+(1722231042, 200, 1),
+(1721277041, 200, 1 ),
+(1721277042, 200, 1 ),
+(1721277043, 200, 1 ),
+(1721277059, 200, 1 ),
+(1722231043, 200, 1 );
 
 --
 -- Indexes for dumped tables
