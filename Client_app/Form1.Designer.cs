@@ -33,6 +33,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.labelDropIndicator = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.lblId = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblAvailablePage = new System.Windows.Forms.Label();
             this.panelDrop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,13 +83,44 @@
             // listBox1
             // 
             this.listBox1.BackColor = System.Drawing.SystemColors.Info;
-            this.listBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBox1.Font = new System.Drawing.Font("Rockwell", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 38;
+            this.listBox1.ItemHeight = 37;
             this.listBox1.Location = new System.Drawing.Point(721, 61);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(673, 346);
+            this.listBox1.Size = new System.Drawing.Size(673, 374);
             this.listBox1.TabIndex = 1;
+            // 
+            // lblId
+            // 
+            this.lblId.AutoSize = true;
+            this.lblId.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblId.Location = new System.Drawing.Point(715, 9);
+            this.lblId.Name = "lblId";
+            this.lblId.Size = new System.Drawing.Size(0, 32);
+            this.lblId.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 6);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(239, 37);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Available page :";
+            // 
+            // lblAvailablePage
+            // 
+            this.lblAvailablePage.AutoSize = true;
+            this.lblAvailablePage.BackColor = System.Drawing.Color.Transparent;
+            this.lblAvailablePage.Font = new System.Drawing.Font("Microsoft YaHei UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAvailablePage.ForeColor = System.Drawing.Color.Orange;
+            this.lblAvailablePage.Location = new System.Drawing.Point(257, 9);
+            this.lblAvailablePage.Name = "lblAvailablePage";
+            this.lblAvailablePage.Size = new System.Drawing.Size(68, 37);
+            this.lblAvailablePage.TabIndex = 4;
+            this.lblAvailablePage.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // mainForm
             // 
@@ -95,6 +129,9 @@
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1406, 767);
+            this.Controls.Add(this.lblAvailablePage);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblId);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.labelDropIndicator);
             this.Controls.Add(this.panelDrop);
@@ -103,7 +140,7 @@
             this.MaximizeBox = false;
             this.Name = "mainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Smart Printer";
+            this.Text = "Smart Priner";
             this.panelDrop.ResumeLayout(false);
             this.panelDrop.PerformLayout();
             this.ResumeLayout(false);
@@ -117,6 +154,9 @@
         private System.Windows.Forms.Label labelDropIndicator;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label lblId;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblAvailablePage;
     }
 }
 

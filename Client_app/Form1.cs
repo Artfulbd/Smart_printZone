@@ -13,9 +13,38 @@ namespace Smart_printZone_Client
 {
     public partial class mainForm : Form
     {
+        Tools tool = new Tools();
         public mainForm()
         {
             InitializeComponent();
+            lblId.Text = tool.id;
+
+
+            if (tool.pageCount == -1)
+            {
+                labelDropIndicator.Text = "Problem on server";
+                labelDropIndicator.BackColor = System.Drawing.Color.Red;
+                this.panelDrop.Enabled = false;
+
+            }
+            else if (tool.isActive) 
+            {
+                lblAvailablePage.Text = tool.pageCount.ToString();
+                if(tool.pageCount == 0)
+                {
+                    labelDropIndicator.Text = "No page left.!";
+                    labelDropIndicator.BackColor = System.Drawing.Color.Red;
+                    this.panelDrop.Enabled = false;
+                }
+            }
+            else
+            {
+                labelDropIndicator.Text = "Id blocked";
+                labelDropIndicator.BackColor = System.Drawing.Color.Red;
+                lblAvailablePage.Text = tool.pageCount.ToString();
+                this.panelDrop.Enabled = false;
+                this.panelDrop.BackColor = System.Drawing.Color.Red;
+            }
         }
 
         private void panelDrop_DragEnter(object sender, DragEventArgs e)
@@ -76,5 +105,7 @@ namespace Smart_printZone_Client
         {
             this.panelDrop.BackColor = Color.Blue;
         }
+
+        
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2020 at 07:21 AM
+-- Generation Time: Mar 22, 2020 at 07:51 PM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -78,20 +78,20 @@ INSERT INTO `student` (`nsuId`, `studentName`, `rfidNo`) VALUES
 CREATE TABLE `trace` (
   `id` int(11) NOT NULL,
   `pgCount` int(11) NOT NULL,
-  `accntStatus` tinyint(1) NOT NULL
+  `accountStatus` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `trace`
 --
 
-INSERT INTO `trace` (`id`, `pgCount`, `accntStatus`) VALUES
-(1722231042, 200, 1),
-(1721277041, 200, 1 ),
-(1721277042, 200, 1 ),
-(1721277043, 200, 1 ),
-(1721277059, 200, 1 ),
-(1722231043, 200, 1 );
+INSERT INTO `trace` (`id`, `pgCount`, `accountStatus`) VALUES
+(1721277041, 200, 1),
+(1721277042, 200, 1),
+(1721277043, 200, 1),
+(1721277059, 200, 1),
+(1722231042, 160, 1),
+(1722231043, 120, 0);
 
 --
 -- Indexes for dumped tables
