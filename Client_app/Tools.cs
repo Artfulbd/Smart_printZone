@@ -2,6 +2,7 @@
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Principal;
@@ -14,8 +15,15 @@ namespace Smart_printZone_Client
     {
         private string Id;
         private string pgCountUrl = "http://localhost/pZone/pageLimit.php";
+        //private string tempStorageDir = @"I:\C#\Work Space\Smart_printZone_Client\store";
+        //this returns crrent dir--> System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        private string tempStorageDir = @"..\..\store";
+        // ip can be used here
+        private string destDir = @"\\DESKTOP-D7LD2F5\ServerFolder"; 
         private int pgCount;
         private bool status;
+        private List<String> fileList = new List<string>();
+        private int MAX_ALLOWED_FILE = 5;
 
         public Tools()
         {
@@ -23,11 +31,98 @@ namespace Smart_printZone_Client
             //this.Id = WindowsIdentity.GetCurrent().Name;
             this.Id = "1722231042";
             getInfo();
+            
+            // need a directory to store temp files
+            if(Directory.Exists(tempStorageDir))
+            {
+                DirectoryInfo di = new DirectoryInfo(tempStorageDir);
+                foreach (FileInfo file in di.EnumerateFiles())
+                {
+                    file.Delete();
+                }
+                foreach (DirectoryInfo dir in di.EnumerateDirectories())
+                {
+                    dir.Delete(true);
+                }
+            }
+            else Directory.CreateDirectory(tempStorageDir);
+
+
             /*
             if (pgCount == -1)Console.WriteLine("Problem on server");
             else if (this.status)Console.WriteLine("Active ID and pg:" + pgCount);
             else Console.WriteLine("Deactive ID and pg:" + pgCount);*/
         }
+
+        // for demo one file means page, so
+        public int afterPageCount()
+        {
+            return this.pageCount - this.getFileList().Count;
+        }
+
+        public bool transfer()
+        {
+            // first transfer then send request to server
+            return doTransfer();
+        }
+
+        private bool doTransfer()
+        {
+            //int dirLength = this.tempStorageDir.Length + 1;
+            string fileName;
+            bool isDone = false;
+            int length = 0;
+
+
+            try
+            {
+                //if only specific file type is needed, here docx
+                //string[] fileList = Directory.GetFiles(srcFolder,"*.docx");
+                string[] fileList = Directory.GetFiles(this.tempStorageDir);
+
+                foreach (string singleFile in fileList)
+                {
+                    fileName = singleFile.Substring(this.tempStorageDir.Length + 1);
+
+                    //overwrite file, if already exist
+                    File.Copy(Path.Combine(this.tempStorageDir, fileName), Path.Combine(destDir, fileName), true);
+
+                    //doesn't overwrite if file already exist
+                    //File.Copy(Path.Combine(srcFolder, fileName), Path.Combine(destFolder, fileName));
+
+                    File.Delete(singleFile);
+                    length++;
+                }
+                isDone = true;
+            }
+            catch (DirectoryNotFoundException drNotFound)
+            {
+                return false;
+            }
+            if (isDone && length == fileList.Count) return true;
+            return false;
+        }
+        public void addFile(string file, string fileName)
+        {
+            fileName = this.Id + "_" + fileName;
+            this.fileList.Add(fileName);
+            string dest = tempStorageDir+ @"\"+fileName;
+            
+            // To copy file to desired temporary location:
+            File.Copy(file, dest);        
+        }
+
+        public int max
+        {
+            get { return MAX_ALLOWED_FILE; }
+        }
+
+        public List<string> getFileList()
+        {
+            return this.fileList;
+        }
+
+        
 
         public string id
         {
