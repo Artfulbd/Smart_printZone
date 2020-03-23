@@ -36,7 +36,11 @@
             http_response_code(200);
             echo json_encode($response);            
         }else{  
-             echo "Invlid ID..!";
+             $response = array(
+                "status"=> "Invlid ID..!"
+            );
+            http_response_code(200);
+            echo json_encode($response); 
         }
         $conObg->detach();
     }

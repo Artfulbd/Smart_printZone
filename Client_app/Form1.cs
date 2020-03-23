@@ -37,6 +37,7 @@ namespace Smart_printZone_Client
                 {
                     lblMsgBox.Text = "No page left.!";
                     this.panelDrop.Enabled = false;
+                    this.btnPrint.Enabled = false;
                 }
                 else
                 {
@@ -51,6 +52,7 @@ namespace Smart_printZone_Client
                 lblMsgBox.Text = "Id blocked";
                 lblAvailablePage.Text = tool.pageCount.ToString();
                 this.panelDrop.Enabled = false;
+                this.btnPrint.Enabled = false;
             }
         }
 
@@ -109,7 +111,6 @@ namespace Smart_printZone_Client
         private string getFileName(string path)
         {
             if (Directory.Exists(path)) return "This is not a file";
-            //else return Path.GetExtension(path);
             else return Path.GetFileName(path);
         }
 
@@ -135,6 +136,10 @@ namespace Smart_printZone_Client
                 lbltest.Text = "File successfully sent to printer.";
                 listBox1.Items.Clear();
                 btnPrint.Enabled = false;
+            }
+            else
+            {
+                lbltest.Text = "Problem on sending.";
             }
         }
     }

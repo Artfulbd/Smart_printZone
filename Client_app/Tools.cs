@@ -15,11 +15,13 @@ namespace Smart_printZone_Client
     {
         private string Id;
         private string pgCountUrl = "http://localhost/pZone/pageLimit.php";
+        private string fileSentUrl = "http://localhost/pZone/fileSent.php";
         //private string tempStorageDir = @"I:\C#\Work Space\Smart_printZone_Client\store";
         //this returns crrent dir--> System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         private string tempStorageDir = @"..\..\store";
         // ip can be used here
-        private string destDir = @"\\DESKTOP-D7LD2F5\ServerFolder"; 
+        private string destDir = @"\\DESKTOP-D7LD2F5\ServerFolder";
+        private string appKey = "apadoto nai";
         private int pgCount;
         private bool status;
         private List<String> fileList = new List<string>();
@@ -63,33 +65,56 @@ namespace Smart_printZone_Client
         public bool transfer()
         {
             // first transfer then send request to server
-            return doTransfer();
+            return doTransferFile() && doFileReceiveRequest();
         }
 
-        private bool doTransfer()
+        private bool doFileReceiveRequest()
         {
-            //int dirLength = this.tempStorageDir.Length + 1;
+            //generating payload
+            string payLoad = "{\"id\" : \"" + this.Id + "\", \"pg\" : \"" + this.getFileList().Count + "\", \"appKey\" : \"" + this.appKey + "\",\"files\" : [";
+            for (int i = 0; i < fileList.Count; i++)
+            {
+                payLoad += "\"" + fileList[i] + "\"";
+                if (i + 1 == fileList.Count)
+                {
+                    payLoad += "]}";
+                    break;
+                }
+                payLoad += ",";
+            }
+
+            var client = new RestClient(fileSentUrl);
+            client.Timeout = -1;
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddParameter("application/json,application/json", payLoad, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.Content.Contains("status"))
+            {
+                dynamic res = JObject.Parse(response.Content.ToString());
+                if (res.status == "ok")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool doTransferFile()
+        {
             string fileName;
             bool isDone = false;
             int length = 0;
-
-
             try
             {
-                //if only specific file type is needed, here docx
-                //string[] fileList = Directory.GetFiles(srcFolder,"*.docx");
                 string[] fileList = Directory.GetFiles(this.tempStorageDir);
-
                 foreach (string singleFile in fileList)
                 {
                     fileName = singleFile.Substring(this.tempStorageDir.Length + 1);
 
                     //overwrite file, if already exist
                     File.Copy(Path.Combine(this.tempStorageDir, fileName), Path.Combine(destDir, fileName), true);
-
-                    //doesn't overwrite if file already exist
-                    //File.Copy(Path.Combine(srcFolder, fileName), Path.Combine(destFolder, fileName));
-
                     File.Delete(singleFile);
                     length++;
                 }
@@ -105,11 +130,11 @@ namespace Smart_printZone_Client
         public void addFile(string file, string fileName)
         {
             fileName = this.Id + "_" + fileName;
-            this.fileList.Add(fileName);
             string dest = tempStorageDir+ @"\"+fileName;
-            
-            // To copy file to desired temporary location:
-            File.Copy(file, dest);        
+      
+            // To copy file to temporary location:
+            File.Copy(file, dest);
+            this.fileList.Add(fileName);
         }
 
         public int max
@@ -120,9 +145,7 @@ namespace Smart_printZone_Client
         public List<string> getFileList()
         {
             return this.fileList;
-        }
-
-        
+        }       
 
         public string id
         {

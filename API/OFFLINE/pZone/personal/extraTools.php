@@ -7,11 +7,24 @@
         }
 
         function test_input($data) {  // return true if VALID
-            $holdOn = $data;
-            $data = trim($data);
-            $data = stripslashes($data);
-            $data = htmlspecialchars($data);
-            return strcmp($holdOn,$data)? false : true;
+            if(is_array($data))
+            {
+                $isInjection = false;
+                foreach($data as $value)
+                {
+                    $isInjection =  $this->test_input($value) ? false : true;
+                    if($isInjection) return false;
+                }
+                return true;
+            }
+            else
+            {
+                $holdOn = $data;
+                $data = trim($data);
+                $data = stripslashes($data);
+                $data = htmlspecialchars($data);
+                return strcmp($holdOn,$data)? false : true;
+            }
         }
 
         // post request to server, cURL
