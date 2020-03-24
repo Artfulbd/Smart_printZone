@@ -42,6 +42,7 @@
             this.panelDrop = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.lbltest = new System.Windows.Forms.Label();
+            this.btnMore = new System.Windows.Forms.Button();
             this.panelDrop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,9 +66,9 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 30;
             this.listBox1.Location = new System.Drawing.Point(541, 50);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(2);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(506, 304);
+            this.listBox1.Size = new System.Drawing.Size(506, 274);
             this.listBox1.TabIndex = 1;
             // 
             // lblId
@@ -177,7 +178,7 @@
             this.panelDrop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelDrop.Controls.Add(this.label2);
             this.panelDrop.Location = new System.Drawing.Point(925, 500);
-            this.panelDrop.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelDrop.Margin = new System.Windows.Forms.Padding(2);
             this.panelDrop.Name = "panelDrop";
             this.panelDrop.Size = new System.Drawing.Size(116, 113);
             this.panelDrop.TabIndex = 0;
@@ -207,6 +208,18 @@
             this.lbltest.TabIndex = 11;
             this.lbltest.Text = "Test purpose";
             // 
+            // btnMore
+            // 
+            this.btnMore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMore.Location = new System.Drawing.Point(747, 541);
+            this.btnMore.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMore.Name = "btnMore";
+            this.btnMore.Size = new System.Drawing.Size(103, 32);
+            this.btnMore.TabIndex = 12;
+            this.btnMore.Text = "Print more";
+            this.btnMore.UseVisualStyleBackColor = true;
+            this.btnMore.Click += new System.EventHandler(this.btnMore_Click);
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -214,6 +227,7 @@
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1052, 621);
+            this.Controls.Add(this.btnMore);
             this.Controls.Add(this.lbltest);
             this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.lblMsgBox);
@@ -228,7 +242,7 @@
             this.Controls.Add(this.panelDrop);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "mainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -255,6 +269,7 @@
         private System.Windows.Forms.Label lblMsgBox;
         private System.Windows.Forms.Button btnPrint;
         private System.Windows.Forms.Label lbltest;
+        private System.Windows.Forms.Button btnMore;
     }
 }
 

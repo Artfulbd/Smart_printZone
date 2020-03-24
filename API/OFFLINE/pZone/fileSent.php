@@ -15,10 +15,10 @@
     if($link == null){
         http_response_code(404);
         echo json_encode(array("status" => "Connection problem on server"));
-    }else if($data == null || !property_exists($data, 'id')  || !property_exists($data, 'pg') || !property_exists($data, 'appKey') || !property_exists($data, 'files')){
+    }else if($data == null || !property_exists($data, 'id')  || !property_exists($data, 'appKey') || !property_exists($data, 'files')){
         $conObg->detach();
         echo "Get Lost";
-    }else if( !$kit->test_input($data->id) || !$kit->test_input($data->pg) || !$kit->test_input($data->appKey) || !$kit->test_input($data->files) ){    
+    }else if( !$kit->test_input($data->id) || !$kit->test_input($data->appKey) || !$kit->test_input($data->files) ){    
         $conObg->detach();
         echo "You  fool, Get Lost";
     }
@@ -26,15 +26,15 @@
         // do everything here, key is needed to intify request source, but not used yet.   
         $fileList = $data->files;
         $id = $data->id;
-        $qry = "INSERT INTO `printdata`(`nsuId`, `fileName`, `available`) VALUES ";
-        foreach($fileList as $value)$qry .= "(".$id.",'".$value."', 1 ) ,";
+        $qry = "INSERT INTO `printdata`(`nsuId`, `fileName`, `page`, `available`)  VALUES ";
+        $i = 0;
+        $len = sizeof($fileList);
+        while( $i < $len ) $qry .= "(".$id.",'".$fileList[$i++]."',".$fileList[$i++].", 1 ) ,";
         $qry[strlen($qry)-1] = ";";
-        $qry2 = "UPDATE `trace` SET `pgCount`=`pgCount`- $data->pg  WHERE id = $id";
-
+        
         mysqli_autocommit($link, false);
         $res = mysqli_query($link, $qry);
-        $res2 = mysqli_query($link, $qry2);
-        if($res  && $res2 ){
+        if($res){
             mysqli_commit($link);
             $response = array(
                 "status"=> "ok"

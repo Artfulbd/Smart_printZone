@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2020 at 07:51 PM
+-- Generation Time: Mar 24, 2020 at 08:32 AM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -31,6 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `printdata` (
   `nsuId` int(11) DEFAULT NULL,
   `fileName` varchar(255) DEFAULT NULL,
+  `page` int(11) NOT NULL DEFAULT 1,
   `available` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -38,12 +39,14 @@ CREATE TABLE `printdata` (
 -- Dumping data for table `printdata`
 --
 
-INSERT INTO `printdata` (`nsuId`, `fileName`, `available`) VALUES
-(1721277041, '1721277041_Lec.txt', 1),
-(1721277042, '1721277042_Lec.txt', 1),
-(1721277043, '1721277043_Lec.txt', 1),
-(1721277059, '1721277059_Lec.docx', 1),
-(1722231042, '1721277060_Lec.docx', 1);
+INSERT INTO `printdata` (`nsuId`, `fileName`, `page`, `available`) VALUES
+(1721277041, '1721277041_Lec.txt', 1, 1),
+(1721277042, '1721277042_Lec.txt', 1, 1),
+(1721277043, '1721277043_Lec.txt', 1, 1),
+(1721277059, '1721277059_Lec.docx', 1, 1),
+(1721277042, '1721277042_New Text Document.txt', 1, 1),
+(1721277042, '1721277042_TestFile.txt', 1, 1),
+(1722231042, '1722231042_TestFile.txt', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -90,7 +93,7 @@ INSERT INTO `trace` (`id`, `pgCount`, `accountStatus`) VALUES
 (1721277042, 200, 1),
 (1721277043, 200, 1),
 (1721277059, 200, 1),
-(1722231042, 160, 1),
+(1722231042, 150, 1),
 (1722231043, 120, 0);
 
 --

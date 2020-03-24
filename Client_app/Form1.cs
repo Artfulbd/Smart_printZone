@@ -19,38 +19,38 @@ namespace Smart_printZone_Client
         public mainForm()
         {
             InitializeComponent();
-            lblId.Text = tool.id;
-            labelDropIndicator.Text = "Can't drop Item.";
-            labelDropIndicator.BackColor = System.Drawing.Color.Red;
+            this.lblId.Text = tool.id;
+            this.labelDropIndicator.Text = "Can't drop Item.";
+            this.labelDropIndicator.BackColor = System.Drawing.Color.Red;
+            this.btnMore.Visible = false;
 
-           
             if (tool.pageCount == -1)
             {
-                lblMsgBox.Text = "Problem on server";
+                this.lblMsgBox.Text = "Problem on server";
                 this.panelDrop.Enabled = false;
             }
             else if (tool.isActive) 
             {
-                lblAvailablePage.Text = tool.pageCount.ToString();
+                this.lblAvailablePage.Text = tool.pageCount.ToString();
 
                 if (tool.pageCount == 0)
                 {
-                    lblMsgBox.Text = "No page left.!";
+                    this.lblMsgBox.Text = "No page left.!";
                     this.panelDrop.Enabled = false;
                     this.btnPrint.Enabled = false;
                 }
                 else
                 {
-                    labelDropIndicator.Text = "Drag and drop your files here -->";
-                    labelDropIndicator.BackColor = System.Drawing.Color.Transparent;
-                    lblNewPageCount.Text = tool.afterPageCount().ToString();
+                    this.labelDropIndicator.Text = "Drag and drop your files here -->";
+                    this.labelDropIndicator.BackColor = System.Drawing.Color.Transparent;
+                    this.lblNewPageCount.Text = tool.afterPageCount().ToString();
 
                 }
             }
             else
             {
-                lblMsgBox.Text = "Id blocked";
-                lblAvailablePage.Text = tool.pageCount.ToString();
+                this.lblMsgBox.Text = "Id blocked";
+                this.lblAvailablePage.Text = tool.pageCount.ToString();
                 this.panelDrop.Enabled = false;
                 this.btnPrint.Enabled = false;
             }
@@ -77,13 +77,13 @@ namespace Smart_printZone_Client
                             if (fileName.EndsWith(".txt"))
                             { 
                                 tool.addFile(hold, fileName);
-                                listBox1.Items.Add(fileName);
+                                this.listBox1.Items.Add(fileName);
 
                                 // for demo one file means page, so
-                                lblNewPageCount.Text = tool.afterPageCount().ToString();
-                                lblMsgBox.Text = "File successfully added.";
+                                this.lblNewPageCount.Text = tool.afterPageCount().ToString();
+                                this.lblMsgBox.Text = "File successfully added.";
                             }
-                            else lblMsgBox.Text = "This is not txt file.";
+                            else this.lblMsgBox.Text = "This is not txt file.";
 
                         }
                         else break;                        
@@ -93,16 +93,16 @@ namespace Smart_printZone_Client
             }
             catch (Exception catchedExcption)
             {
-                lblMsgBox.Text = "Are you fool or something.";
+                this.lblMsgBox.Text = "Are you fool or something.";
             }
             finally
             {
-                if (listBox1.Items.Count == tool.max)
+                if (this.listBox1.Items.Count == tool.max)
                 {
                     this.panelDrop.Enabled = false;
                     this.panelDrop.BackColor = System.Drawing.Color.Red;
                     this.labelDropIndicator.Text = "Reached to max limit 5";
-                    lblMsgBox.Text = "Reached to maximum file limit.";
+                    this.lblMsgBox.Text = "Reached to maximum file limit.";
                 }
             }
 
@@ -131,16 +131,29 @@ namespace Smart_printZone_Client
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            if(tool.transfer())
+            if(this.listBox1.Items.Count>0 && tool.transfer())
             {
-                lbltest.Text = "File successfully sent to printer.";
-                listBox1.Items.Clear();
-                btnPrint.Enabled = false;
+                this.lbltest.Text = "File successfully sent to printer.";
+                this.listBox1.Items.Clear();
+                this.btnPrint.Enabled = false;
+                tool.flash();
+                this.labelDropIndicator.Text = "Not ready to receive file";
+                this.panelDrop.Enabled = false;
+                this.btnMore.Visible = true;
             }
             else
             {
                 lbltest.Text = "Problem on sending.";
             }
+        }
+
+        private void btnMore_Click(object sender, EventArgs e)
+        {
+            this.labelDropIndicator.Text = "Drag and drop your files here -->";
+            this.panelDrop.Enabled = true;
+            this.btnMore.Visible = false;
+            this.btnPrint.Enabled = true;
+
         }
     }
 }

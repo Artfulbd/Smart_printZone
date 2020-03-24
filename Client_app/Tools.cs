@@ -23,8 +23,10 @@ namespace Smart_printZone_Client
         private string destDir = @"\\DESKTOP-D7LD2F5\ServerFolder";
         private string appKey = "apadoto nai";
         private int pgCount;
+        private int pgAlloc;
         private bool status;
-        private List<String> fileList = new List<string>();
+        private List<string> fileList = new List<string>();
+        private List<int> pageList = new List<int>();
         private int MAX_ALLOWED_FILE = 5;
 
         public Tools()
@@ -59,7 +61,28 @@ namespace Smart_printZone_Client
         // for demo one file means page, so
         public int afterPageCount()
         {
-            return this.pageCount - this.getFileList().Count;
+            return this.pgCount - this.pgAlloc;
+        }
+
+        public void flash()
+        {
+            pageList.Clear();
+            fileList.Clear();
+        }
+
+        public void addFile(string file, string fileName)
+        {
+            fileName = this.Id + "_" + fileName;
+            string dest = tempStorageDir + @"\" + fileName;
+
+            // To copy file to temporary location:
+            File.Copy(file, dest);
+            this.fileList.Add(fileName);
+
+            //for now it is 1, later on it will calcualted using user input
+            int singleFilePageCount = 1;
+            this.pageList.Add(singleFilePageCount);
+            this.pgAlloc += singleFilePageCount;
         }
 
         public bool transfer()
@@ -74,7 +97,7 @@ namespace Smart_printZone_Client
             string payLoad = "{\"id\" : \"" + this.Id + "\", \"pg\" : \"" + this.getFileList().Count + "\", \"appKey\" : \"" + this.appKey + "\",\"files\" : [";
             for (int i = 0; i < fileList.Count; i++)
             {
-                payLoad += "\"" + fileList[i] + "\"";
+                payLoad += "\"" + fileList[i] + "\", \""+ pageList[i]+"\"";
                 if (i + 1 == fileList.Count)
                 {
                     payLoad += "]}";
@@ -127,15 +150,7 @@ namespace Smart_printZone_Client
             if (isDone && length == fileList.Count) return true;
             return false;
         }
-        public void addFile(string file, string fileName)
-        {
-            fileName = this.Id + "_" + fileName;
-            string dest = tempStorageDir+ @"\"+fileName;
-      
-            // To copy file to temporary location:
-            File.Copy(file, dest);
-            this.fileList.Add(fileName);
-        }
+        
 
         public int max
         {
@@ -181,7 +196,7 @@ namespace Smart_printZone_Client
             {
                 dynamic res = JObject.Parse(response.Content.ToString());
                 this.pgCount = res.pgCount;
-                if (res.accountStatus == 1)
+                if (res.status == "ok" && res.accountStatus == 1)
                 {   // account is active
                     this.status = true;
                 }
