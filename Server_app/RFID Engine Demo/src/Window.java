@@ -34,17 +34,19 @@ public class Window {
 	}
 	
 	void start() {
-		 ad = new ArduinoAdaptor();
+		ad = new ArduinoAdaptor();
+		Tools.hold = "";
+		int wait = 0;
 		String temp = "";
-		int i = 0, other = 0;
+		int i = 0;
 		disableAll();
 		lblListening.setText("Getting ready");
-		
+		/*
 		if(true) {
-			Tools.hold = "511ED5";
-	    //if(ad.isReadable()) {
-			/*ad.run();
-			while(Tools.id.equals("")) {//hold
+			Tools.hold = "511ED5";*/
+	    if(ad.isReadable()) {
+			ad.run();
+			while(Tools.hold.equals("")) {//hold
 				if(i % 4 == 0)temp = BASE;
 				lblListening.setText(temp);
 				temp += ".";
@@ -54,15 +56,18 @@ public class Window {
 			}
 			ad.close();
 			ad.interrupt();
-*/
+			
 			tool = new Tools();
+			
 			if(getAndSetData(tool)) {
 				activeAll();
+				wait = 3000;
 			}
 			else {// false punch
 				lblListening.setText("False punch..!");
+				wait = 3000;
 			}
-			try {Thread.sleep(3000);} catch (InterruptedException e) {}
+			try {Thread.sleep(wait);} catch (InterruptedException e) {}
 			start();
 			
 		}
@@ -78,12 +83,12 @@ public class Window {
 			lblName.setText(tool.getName());
 			
 			fileList = tool.getFiles();
-			Tools.hold = "ok";
 			if(fileList.size() == 0) {
 				lblStatus.setText("Nothing to print.");
-			}else {
-				//do print command
-				lblStatus.setText("Printing.. collect it from tray");	
+			}
+			else {
+				lblStatus.setText("Printing.. collect it from tray");
+				tool.printThis(fileList);
 			}
 			return true;
 		}

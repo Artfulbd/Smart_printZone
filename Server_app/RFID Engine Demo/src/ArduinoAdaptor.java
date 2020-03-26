@@ -35,13 +35,11 @@ public class ArduinoAdaptor extends Thread{
 
 	//@Override
 	public void run() {
-		/*
 		serialPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
 		serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 0, 0);
 		try {Thread.sleep(1000);} catch (InterruptedException e) {}
 		serialPort.writeBytes( "s".getBytes(), 1); // sending scanning signal
-		startReading();*/
-		Tools.id = "E6F8CF7";
+		startReading();
 	}
 	private void startReading() { // support of test1
 		serialPort.addDataListener(new SerialPortDataListener() {
@@ -54,8 +52,8 @@ public class ArduinoAdaptor extends Thread{
 				for(int i = 0; i<rawData.length; i++)rawData[i] = rawData[i].trim();
 				data = getId(rawData);
 				if(!data.equals("") && data.length() > 5) {    // got id huhu 
-					Tools.id = data;
-					//System.out.println("ID: "+Master.getId());
+					Tools.hold = data;
+					System.out.println("ID: "+data);
 					serialPort.writeBytes("o".getBytes(), 1);  // sending stop signal
 					return;
 				}
