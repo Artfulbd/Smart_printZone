@@ -23,7 +23,7 @@
         echo "You  fool, Get Lost";
     }
     else{ 
-        // do everything here, key is needed to intify request source, but not used yet.   
+        // do everything here, key is needed to identify request source, but not used yet.   
         $fileList = $data->files;
         $id = $data->id;
         $qry = "INSERT INTO `printdata`(`nsuId`, `fileName`, `page`, `available`)  VALUES ";
