@@ -18,20 +18,24 @@ namespace Printer_Client
             makeReq();
         }
 
+        public void checkAgain(){ makeReq(); }
+
+        // makes request and store initial respons 
         private void makeReq()
         {
+            //use login_url here
 
         }
 
-        /*public IRestResponse getRespons()
-        {
-            IRestResponse res;
-            
-            return res;
-        }*/
+        // gets initial respons to populate User's data
+        public IRestResponse getRespons()
+        {         
+            return this.res;
+        }
 
         public bool removeFile(string file_name)
         {
+            //use del_url here
             return true;
         }
 

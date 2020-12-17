@@ -12,7 +12,7 @@ namespace Printer_Client
         public double size { get; } //in mega byte
         public int page_count { get; } 
         public DateTime creation_time { get; }
-        private bool isCreatedNow;
+        private bool isNow;  // is created now
        
         private FileType() { } //default constructor cannot be called
         public FileType(string name, double size, int count, DateTime time)
@@ -21,7 +21,7 @@ namespace Printer_Client
             this.size = size;
             this.page_count = count;
             this.creation_time = time;
-            this.isCreatedNow = false;
+            this.isNow = false;
         }
         public FileType(string name, double size, int count)
         {
@@ -29,8 +29,10 @@ namespace Printer_Client
             this.size = size;
             this.page_count = count;
             this.creation_time = DateTime.Now;
-            this.isCreatedNow = true;
+            this.isNow = true;
         }
+
+        public bool isCreatedNow() { return this.isNow;  }
 
         //generate payload string for removing this file from server
         public string getDelPayload()
