@@ -23,9 +23,13 @@ namespace Printer_Client
             InitializeComponent();
             Directory.CreateDirectory(temp_dir);
             FileWatcher fw = new FileWatcher(temp_dir, hidden_dir);
+            fw.FileInsertionEvent += Fw_FileInsertionEvent;
         }
 
-        
+        private void Fw_FileInsertionEvent(object sender, FileInsertionEventArgs e)
+        {
+            populate();
+        }
 
         private void populate()
         {

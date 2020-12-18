@@ -96,14 +96,18 @@ namespace Printer_Client
         {
             // Specify what is done when a file is changed, created, or deleted.
             string old = e.FullPath;
-            Thread.Sleep(1000);
             string new_dir = this.hidden_dir + e.Name;
+            Thread.Sleep(500);
             File.Copy(old, new_dir, true);
             
             File.Delete(old);
             fireEvent(new_dir);
         }
-        protected virtual void fireEvent(string file_name)
+        //protected virtual void fireEvent(string file_name)
+        //{
+        //    FileInsertionEvent?.Invoke(this, new FileInsertionEventArgs(file_name));
+        //}
+        private void fireEvent(string file_name)
         {
             FileInsertionEvent?.Invoke(this, new FileInsertionEventArgs(file_name));
         }
