@@ -1,13 +1,63 @@
 <?php
-    class tools {
+    class Tools {
         private $fileReqUrl = "http://something.php";
-    
+        private $comming_in_list = array('id','key','machine');
+        private $take_file_list = array('id','key','file_count','files');
+        private $server_dir = "\\\DESKTOP-5RNDV53\ServerFolder";
+
+        function _validate($data, $list){
+            if($data == null){
+                return false;
+            }
+            $size = count($list); $i = 0;
+            // checking for property presence and injection
+            while($i < $size && property_exists($data, $list[$i]) && $this->test_input($data->{$list[$i++]}));
+            return ($size == $i && $this->checkKey($data));
+        }
+
+        private function checkKey($data){
+            //check key machanism here
+            return true;
+        }
+        function get_server_dir(){
+            return $this->server_dir;
+        }
+        function count_page($path) {
+            $num = 0;
+            if(file_exists($path)){
+                $raw = file_get_contents($path);
+                $num = preg_match_all("/\/Page\W/", $raw, $dummy);
+            }            
+            return $num;
+          }
+        function get_comming_list(){
+            return $this->comming_in_list;
+        }
+        function take_file_list(){
+            return $this->take_file_list;
+        }
         function get_fileReqUrl_url(){
             return $this->fileReqUrl;
         }
 
         function test_input($data) {  // return true if VALID
-            if(is_array($data))
+            $operators = array(
+                'select * ',
+                'select ',
+                'union all ',
+                'union ',
+                ' all ',
+                ' where ',
+                ' and 1 ',
+                ' and ',
+                ' or ',
+                ' 1=1 ',
+                ' 2=2 ',
+                ' -- ',
+                '--'
+            );
+           
+            if(is_array($data) || is_object($data))
             {
                 $isInjection = false;
                 foreach($data as $value)
@@ -19,6 +69,12 @@
             }
             else
             {
+                foreach($operators as $operator)
+                {
+                    if (preg_match("/".$operator."/i", urldecode(strtolower($data)))) {
+                        return false;
+                    }
+                }
                 $holdOn = $data;
                 $data = trim($data);
                 $data = stripslashes($data);

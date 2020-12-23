@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 18, 2020 at 05:42 AM
+-- Generation Time: Dec 23, 2020 at 07:49 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -32,6 +32,16 @@ CREATE TABLE `creadentials` (
   `dir` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `creadentials`
+--
+
+INSERT INTO `creadentials` (`type`, `dir`) VALUES
+('size', '2048'),
+('hidden', 'C:Users\\Artful\\Desktop\\NewDir'),
+('temp', 'C:Users\\Artful\\Desktop\\NSU PDF'),
+('server', '\\\\DESKTOP-5RNDV53\\ServerFolder');
+
 -- --------------------------------------------------------
 
 --
@@ -39,9 +49,16 @@ CREATE TABLE `creadentials` (
 --
 
 CREATE TABLE `_asd568` (
-  `ttl` int(11) NOT NULL,
+  `ttl` varchar(20) NOT NULL,
   `eky` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `_asd568`
+--
+
+INSERT INTO `_asd568` (`ttl`, `eky`) VALUES
+('app_activation', 1);
 
 -- --------------------------------------------------------
 
@@ -55,7 +72,7 @@ CREATE TABLE `_pending5cq71rd` (
   `time` datetime NOT NULL,
   `pg_count` int(11) NOT NULL,
   `size` double NOT NULL,
-  `is_online` tinyint(1) NOT NULL
+  `is_online` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -67,10 +84,22 @@ CREATE TABLE `_pending5cq71rd` (
 CREATE TABLE `_user711qd9m` (
   `id` varchar(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `status` tinyint(1) NOT NULL,
-  `page_left` int(11) NOT NULL,
-  `total_printed` int(11) NOT NULL
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `page_left` int(11) NOT NULL DEFAULT 200,
+  `total_printed` int(11) NOT NULL DEFAULT 0,
+  `pending` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `_user711qd9m`
+--
+
+INSERT INTO `_user711qd9m` (`id`, `name`, `status`, `page_left`, `total_printed`, `pending`) VALUES
+('1721277042', 'Fahad Rahman Amik', 1, 200, 0, 0),
+('1721616042', 'Junaer Adib', 1, 200, 0, 0),
+('1722231042', 'Md. Ariful Haque', 1, 200, 0, 0),
+('1822231042', 'Akhandanand Tripathi', 1, 200, 0, 0),
+('1922231042', 'Rajpal Yadhap', 0, 200, 0, 0);
 
 --
 -- Indexes for dumped tables

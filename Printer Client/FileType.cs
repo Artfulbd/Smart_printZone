@@ -13,6 +13,7 @@ namespace Printer_Client
         public int page_count { get; } 
         public DateTime creation_time { get; }
         private bool isNow;  // is created now
+        public bool isReady; // false if unable to be download from onlne
        
         private FileType() { } //default constructor cannot be called
         public FileType(string name, double size, int count, DateTime time)
