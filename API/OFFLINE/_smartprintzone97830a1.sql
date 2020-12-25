@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 23, 2020 at 07:49 PM
+-- Generation Time: Dec 25, 2020 at 08:38 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -72,7 +72,8 @@ CREATE TABLE `_pending5cq71rd` (
   `time` datetime NOT NULL,
   `pg_count` int(11) NOT NULL,
   `size` double NOT NULL,
-  `is_online` tinyint(1) NOT NULL DEFAULT 0
+  `is_online` tinyint(1) NOT NULL DEFAULT 0,
+  `source` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

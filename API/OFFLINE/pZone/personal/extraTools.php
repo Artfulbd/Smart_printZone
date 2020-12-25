@@ -2,7 +2,7 @@
     class Tools {
         private $fileReqUrl = "http://something.php";
         private $comming_in_list = array('id','key','machine');
-        private $take_file_list = array('id','key','file_count','files');
+        private $take_file_list = array('id','key','pc_name','file_count','files');
         private $server_dir = "\\\DESKTOP-5RNDV53\ServerFolder";
 
         function _validate($data, $list){

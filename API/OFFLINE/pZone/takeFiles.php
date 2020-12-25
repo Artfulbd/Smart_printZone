@@ -37,7 +37,7 @@
                 $pending = $res['pending'];
 
                 if($count > 0 && count($files) == $count){
-                    $qry = "INSERT INTO `_pending5cq71rd`(`id`, `file_name`, `time`, `pg_count`, `size`, `is_online`) VALUES ";
+                    $qry = "INSERT INTO `_pending5cq71rd`(`id`, `file_name`, `time`, `pg_count`, `size`, `is_online`,`source`) VALUES ";
                     $prb = false;
                     $total_count = 0;
                     for($i = 0; $i < $count; $i++){
@@ -46,7 +46,7 @@
                         $name = $kit->get_server_dir().'/'.$data->id.'_'.$file->file_name.".pdf";
                         $page_count = $kit->count_page($name); //returns 0 if file not found
                         if(file_exists($name) && $page_count == $file->pg_count){
-                            $qry .= "('$data->id', '$file->file_name', '$file->time', '$file->pg_count', '$file->size', 1)";
+                            $qry .= "('$data->id', '$file->file_name', '$file->time', '$file->pg_count', '$file->size', 1, '$data->pc_name')";
                             if($i+1 != $count) $qry .= ",";  
                             $pending ++;
                             $total_count += $file->pg_count; 
