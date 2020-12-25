@@ -14,7 +14,8 @@ namespace Printer_Client
         private string hidden_dir;
         private string type = "*.pdf";
         public bool isListening { get; }
-        public event EventHandler<FileInsertionEventArgs> FileInsertionEvent;
+        static FileSystemWatcher watcher;
+        public static event EventHandler<FileInsertionEventArgs> FileInsertionEvent;
         public FileWatcher(string temp_dir, string hidden_dir)
         {
             this.temp_dir = temp_dir;
@@ -26,9 +27,9 @@ namespace Printer_Client
             }
             else this.isListening = false;            
         }
-        private void makeFile()
+        private void makeFile(string text)
         {
-            string fileName = hidden_dir+"Mahesh.txt";
+            string fileName = hidden_dir+ text+".txt";
 
             try
             {
@@ -42,9 +43,9 @@ namespace Printer_Client
                 using (FileStream fs = File.Create(fileName))
                 {
                     // Add some text to file    
-                    Byte[] title = new UTF8Encoding(true).GetBytes("New Text File");
+                    Byte[] title = new UTF8Encoding(true).GetBytes(text);
                     fs.Write(title, 0, title.Length);
-                    byte[] author = new UTF8Encoding(true).GetBytes("Mahesh Chand");
+                    byte[] author = new UTF8Encoding(true).GetBytes("Chreated");
                     fs.Write(author, 0, author.Length);
                 }
 
@@ -74,7 +75,7 @@ namespace Printer_Client
                 }
             }
             else Directory.CreateDirectory(this.temp_dir);
-            FileSystemWatcher watcher = new FileSystemWatcher(this.temp_dir);
+            watcher = new FileSystemWatcher(this.temp_dir);
             // Watch for changes in LastAccess and LastWrite times, and
             // the renaming of files.
             watcher.NotifyFilter = NotifyFilters.LastAccess
@@ -99,9 +100,9 @@ namespace Printer_Client
             string new_dir = this.hidden_dir + e.Name;
             Thread.Sleep(500);
             File.Copy(old, new_dir, true);
-            
             File.Delete(old);
             fireEvent(new_dir);
+            makeFile(Thread.CurrentThread.ManagedThreadId.ToString());
         }
         //protected virtual void fireEvent(string file_name)
         //{

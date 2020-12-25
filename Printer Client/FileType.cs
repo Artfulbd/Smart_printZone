@@ -34,12 +34,23 @@ namespace Printer_Client
         }
 
         public bool isCreatedNow() { return this.isNow;  }
-
-        //generate payload string for removing this file from server
+        
+               //generate payload string for removing this file from server
         public string getDelPayload()
         {
             string payload = "initial";
             return payload;
+        }
+
+        public override bool Equals(Object obj)
+        {
+            FileType t = (FileType)obj;
+            return (this.file_name == t.file_name && this.size == t.size && t.page_count == this.page_count);
+        }
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+
         }
     }
 }
