@@ -13,19 +13,16 @@ namespace Printer_Client
         private string temp_dir;
         private string hidden_dir;
         private string type = "*.pdf";
-        public bool isListening { get; }
+        public bool isListening { get; private set; }
+        private bool isActive;
         static FileSystemWatcher watcher;
-        public static event EventHandler<FileInsertionEventArgs> FileInsertionEvent;
-        public FileWatcher(string temp_dir, string hidden_dir)
+        public event EventHandler<FileInsertionEventArgs> FileInsertionEvent;
+        public event EventHandler<FileInsertionEventArgs> DuplicateFileInsertionEvent;
+        public FileWatcher(User usr, Tools tool)
         {
-            this.temp_dir = temp_dir;
-            this.hidden_dir = hidden_dir;
-            if (Directory.Exists(temp_dir) && Directory.Exists(hidden_dir))
-            {
-                listen();
-                this.isListening = true;
-            }
-            else this.isListening = false;            
+            this.temp_dir = tool.getTempDir();
+            this.hidden_dir = tool.getHiddenDir();
+            isActive = usr.isActive();
         }
         private void makeFile(string text)
         {
@@ -64,7 +61,8 @@ namespace Printer_Client
                 Console.WriteLine(Ex.ToString());
             }
         }
-        private void listen()
+        
+        private void cleanDirectory()
         {
             if (Directory.Exists(this.temp_dir))
             {
@@ -75,42 +73,74 @@ namespace Printer_Client
                 }
             }
             else Directory.CreateDirectory(this.temp_dir);
-            watcher = new FileSystemWatcher(this.temp_dir);
-            // Watch for changes in LastAccess and LastWrite times, and
-            // the renaming of files.
-            watcher.NotifyFilter = NotifyFilters.LastAccess
-                                    | NotifyFilters.LastWrite
-                                    | NotifyFilters.FileName
-                                    | NotifyFilters.DirectoryName;
 
-            // Only watch pdf files on our case.
-            watcher.Filter = "*.pdf";
-
-            // Add event handlers.
-            watcher.Created += OnCreated;
-
-            // Begin watching.
-            watcher.EnableRaisingEvents = true;
+            if (Directory.Exists(this.hidden_dir))
+            {
+                System.IO.DirectoryInfo di = new DirectoryInfo(this.hidden_dir);
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+            }
+            else Directory.CreateDirectory(this.hidden_dir);
 
         }
-        public void OnCreated(object source, FileSystemEventArgs e)
+        public void listen()
+        {
+            if (this.isActive)
+            {
+                cleanDirectory();
+                watcher = new FileSystemWatcher(this.temp_dir);
+                // Watch for changes in LastAccess and LastWrite times, and
+                // the renaming of files.
+                watcher.NotifyFilter = NotifyFilters.LastAccess
+                                        | NotifyFilters.LastWrite
+                                        | NotifyFilters.FileName
+                                        | NotifyFilters.DirectoryName;
+
+                // Only watch pdf files on our case.
+                watcher.Filter = "*.pdf";
+
+                // Add event handlers.
+                watcher.Created += OnCreated;
+
+                // Begin watching.
+                watcher.EnableRaisingEvents = true;
+                this.isListening = true;
+            }
+            else this.isListening = false;
+            
+
+        }
+        private void OnCreated(object source, FileSystemEventArgs e)
         {
             // Specify what is done when a file is changed, created, or deleted.
-            string old = e.FullPath;
-            string new_dir = this.hidden_dir + e.Name;
-            Thread.Sleep(500);
-            File.Copy(old, new_dir, true);
-            File.Delete(old);
-            fireEvent(new_dir);
+            
+            fireEvent(e);
             makeFile(Thread.CurrentThread.ManagedThreadId.ToString());
         }
         //protected virtual void fireEvent(string file_name)
         //{
         //    FileInsertionEvent?.Invoke(this, new FileInsertionEventArgs(file_name));
         //}
-        private void fireEvent(string file_name)
+        private void fireEvent(FileSystemEventArgs e)
         {
-            FileInsertionEvent?.Invoke(this, new FileInsertionEventArgs(file_name));
+            string old = e.FullPath;
+            string new_dir = this.hidden_dir +"/"+ e.Name;
+            try
+            {
+                Thread.Sleep(500);
+                File.Copy(old, new_dir, false);
+                File.Delete(old);
+                Thread.Sleep(500);
+                FileInsertionEvent?.Invoke(this, new FileInsertionEventArgs(new_dir));
+            }
+            catch(Exception ex)
+            {
+                DuplicateFileInsertionEvent?.Invoke(this, new FileInsertionEventArgs(new_dir));
+            }
+            
+            
         }
     }
 }

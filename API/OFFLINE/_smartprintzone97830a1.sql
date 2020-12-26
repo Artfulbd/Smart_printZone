@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 25, 2020 at 08:38 PM
+-- Generation Time: Dec 26, 2020 at 08:34 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -38,8 +38,8 @@ CREATE TABLE `creadentials` (
 
 INSERT INTO `creadentials` (`type`, `dir`) VALUES
 ('size', '2048'),
-('hidden', 'C:Users\\Artful\\Desktop\\NewDir'),
-('temp', 'C:Users\\Artful\\Desktop\\NSU PDF'),
+('hidden', 'E:\\Testing\\NewDir'),
+('temp', 'E:\\Testing\\NSU PDF'),
 ('server', '\\\\DESKTOP-5RNDV53\\ServerFolder');
 
 -- --------------------------------------------------------
@@ -63,6 +63,28 @@ INSERT INTO `_asd568` (`ttl`, `eky`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `_cread96a4f3p`
+--
+
+CREATE TABLE `_cread96a4f3p` (
+  `setting_id` tinyint(4) NOT NULL,
+  `max_file_count` tinyint(4) NOT NULL,
+  `max_size_total` double NOT NULL,
+  `server_dir` varchar(100) NOT NULL,
+  `hidden_dir` varchar(100) NOT NULL,
+  `temp_dir` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `_cread96a4f3p`
+--
+
+INSERT INTO `_cread96a4f3p` (`setting_id`, `max_file_count`, `max_size_total`, `server_dir`, `hidden_dir`, `temp_dir`) VALUES
+(1, 6, 30000, '\\\\DESKTOP-5RNDV53\\ServerFolder', 'E:\\Testing\\NewDir', 'E:\\Testing\\NSU PDF');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `_pending5cq71rd`
 --
 
@@ -75,6 +97,13 @@ CREATE TABLE `_pending5cq71rd` (
   `is_online` tinyint(1) NOT NULL DEFAULT 0,
   `source` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `_pending5cq71rd`
+--
+
+INSERT INTO `_pending5cq71rd` (`id`, `file_name`, `time`, `pg_count`, `size`, `is_online`, `source`) VALUES
+('1722231042', 'Schedule_Fall2020', '2020-12-26 01:35:53', 1, 1, 1, 'w');
 
 -- --------------------------------------------------------
 
@@ -98,7 +127,7 @@ CREATE TABLE `_user711qd9m` (
 INSERT INTO `_user711qd9m` (`id`, `name`, `status`, `page_left`, `total_printed`, `pending`) VALUES
 ('1721277042', 'Fahad Rahman Amik', 1, 200, 0, 0),
 ('1721616042', 'Junaer Adib', 1, 200, 0, 0),
-('1722231042', 'Md. Ariful Haque', 1, 200, 0, 0),
+('1722231042', 'Md. Ariful Haque', 1, 200, 0, 1),
 ('1822231042', 'Akhandanand Tripathi', 1, 200, 0, 0),
 ('1922231042', 'Rajpal Yadhap', 0, 200, 0, 0);
 
@@ -120,6 +149,12 @@ ALTER TABLE `_asd568`
   ADD PRIMARY KEY (`ttl`);
 
 --
+-- Indexes for table `_cread96a4f3p`
+--
+ALTER TABLE `_cread96a4f3p`
+  ADD PRIMARY KEY (`setting_id`);
+
+--
 -- Indexes for table `_pending5cq71rd`
 --
 ALTER TABLE `_pending5cq71rd`
@@ -130,6 +165,16 @@ ALTER TABLE `_pending5cq71rd`
 --
 ALTER TABLE `_user711qd9m`
   ADD PRIMARY KEY (`id`,`name`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `_cread96a4f3p`
+--
+ALTER TABLE `_cread96a4f3p`
+  MODIFY `setting_id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

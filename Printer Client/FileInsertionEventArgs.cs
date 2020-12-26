@@ -15,12 +15,14 @@ namespace Printer_Client
         public DateTime time { get; }
         public double size { get; }
         public bool isValid { get; }
+        public string nameWithPath {get;}
         public FileInsertionEventArgs(string name)
         {
             
             System.IO.FileInfo fi = new System.IO.FileInfo(name);
             if (fi.Exists)
             {
+                this.nameWithPath = name;
                 this.name = Path.GetFileNameWithoutExtension(name);
                 this.page_count = new PdfReader(name).NumberOfPages;
                 this.time = fi.LastWriteTime;

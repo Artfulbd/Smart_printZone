@@ -109,7 +109,7 @@ namespace Printer_Client
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Franklin Gothic Medium", 16.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(629, 65);
+            this.label5.Location = new System.Drawing.Point(604, 65);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(162, 36);
             this.label5.TabIndex = 5;
@@ -122,11 +122,11 @@ namespace Printer_Client
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTime.AutoSize = true;
             this.lblTime.Font = new System.Drawing.Font("Impact", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTime.Location = new System.Drawing.Point(797, 66);
+            this.lblTime.Location = new System.Drawing.Point(772, 66);
             this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(276, 35);
+            this.lblTime.Size = new System.Drawing.Size(231, 35);
             this.lblTime.TabIndex = 6;
-            this.lblTime.Text = "12/12/2020 12:12:12 PM";
+            this.lblTime.Text = "12-12-2020 12:12:12";
             // 
             // shade
             // 
@@ -140,10 +140,10 @@ namespace Printer_Client
             // lblIndex
             // 
             this.lblIndex.AutoSize = true;
-            this.lblIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIndex.Location = new System.Drawing.Point(1041, 0);
+            this.lblIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIndex.Location = new System.Drawing.Point(1046, 69);
             this.lblIndex.Name = "lblIndex";
-            this.lblIndex.Size = new System.Drawing.Size(49, 32);
+            this.lblIndex.Size = new System.Drawing.Size(41, 29);
             this.lblIndex.TabIndex = 8;
             this.lblIndex.Text = "10";
             // 

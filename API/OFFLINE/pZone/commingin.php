@@ -26,13 +26,13 @@
         $res = mysqli_fetch_all(mysqli_query($link, $qry), MYSQLI_ASSOC);
 
         // get credentials for app
-        $qry2 = "SELECT * FROM `creadentials`";
+        $qry2 = "SELECT * FROM `_cread96a4f3p` WHERE setting_id = 1";
         $res2 = mysqli_fetch_all(mysqli_query($link, $qry2), MYSQLI_ASSOC);     
 
         $response = null;
         if($res != null && $res2 != null){
             $res = $res[0];
-            //$res2 = $res2[0];
+            $res2 = $res2[0];
             $sync = true;
             $file_list = array();
             if($res['pending'] > 0){
@@ -46,7 +46,8 @@
                     /*
                      * check for online files
                      * if online, send this to be downloaded.
-                     *
+                     * also add those
+                     * 
                     */
                 }
             }
@@ -55,11 +56,7 @@
                 if($res['status'] == '1' ){
                     // active id
                    $server = $temp = $hidden = null;
-                   foreach($res2 as $hold){
-                        if($hold['type'] == 'server') $server = $hold['dir'];
-                        if($hold['type'] == 'hidden') $hidden = $hold['dir'];
-                        if($hold['type'] == 'temp') $temp = $hold['dir'];
-                   }
+                   
                    
                     $response = array(
                         "status" => "1",  // protocol
@@ -67,9 +64,11 @@
                         "active" => $res['status'], //as flag if account is active
                         "pgLeft" => $res['page_left'],
                         "pgPrinted" => $res['total_printed'],
-                        "server" => $server,
-                        "temp" => $temp,
-                        "hidden" => $hidden,
+                        "maxSizeTotal" => $res2['max_size_total'],
+                        "maxFileCount" =>$res2['max_file_count'],
+                        "server" => $res2['server_dir'],
+                        "temp" => $res2['temp_dir'],
+                        "hidden" => $res2['hidden_dir'],
                         "filePending" => $res['pending'],
                         "files" => $file_list,
                         "ip" => $kit->get_client_ip() // delete it before production
@@ -86,7 +85,6 @@
 
 
                 // set request log here
-
             }
             else{
                 // database not synchronized

@@ -3,6 +3,7 @@
         private $fileReqUrl = "http://something.php";
         private $comming_in_list = array('id','key','machine');
         private $take_file_list = array('id','key','pc_name','file_count','files');
+        private $remove_file_list = array('id','key','pc_name','file_name','time', 'pg_count','size');
         private $server_dir = "\\\DESKTOP-5RNDV53\ServerFolder";
 
         function _validate($data, $list){
@@ -36,8 +37,8 @@
         function take_file_list(){
             return $this->take_file_list;
         }
-        function get_fileReqUrl_url(){
-            return $this->fileReqUrl;
+        function remove_file_list(){
+            return $this->remove_file_list;
         }
 
         function test_input($data) {  // return true if VALID

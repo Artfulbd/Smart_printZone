@@ -9,22 +9,38 @@ namespace Printer_Client
 {
     class Communicator
     {
-        private string login_ur;
-        private string del_ur;
+        private string login_ur = "http://localhost/pZone/commingin.php";  // initial data popukation
+        private string req_ur = "http://localhost/pZone/takeFiles.php";    // file sent to server request
+        private string rem_ur = "http://localhost/pZone/removefile.php";    // file remove request
         private IRestResponse res;
 
-        public Communicator()
+        //public Communicator() {
+
+
+        //}
+
+        public void initialRequest(string machineName, string id, string key)
         {
-            makeReq();
+            string payLoad = "{\"id\":\"" + id + "\",\"machine\":\"" + machineName + "\",\"key\":\"" + key + "\"}";
+            this.res = makeReq(this.login_ur, payLoad);
+        }
+        public IRestResponse getInitialRespons()
+        {
+            return this.res; 
+        }
+        public void checkAgain(){ 
+            //initialRequest(); 
         }
 
-        public void checkAgain(){ makeReq(); }
-
         // makes request and store initial respons 
-        private void makeReq()
+        private IRestResponse makeReq(string url, string payLoad)
         {
-            //use login_url here
-
+            var client = new RestClient(url);
+            client.Timeout = -1;
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddParameter("application/json,application/json", payLoad, ParameterType.RequestBody);
+            return client.Execute(request);
         }
 
         // gets initial respons to populate User's data
@@ -39,39 +55,6 @@ namespace Printer_Client
             return true;
         }
 
-        //communication demo
-        //private bool doFileReceiveRequest()
-        //{
-        //    generating payload
-        //    string payLoad = "{\"id\" : \"" + this.Id + "\", \"pg\" : \"" + this.getFileList().Count + "\", \"appKey\" : \"" + this.appKey + "\",\"files\" : [";
-        //    for (int i = 0; i < fileList.Count; i++)
-        //    {
-        //        payLoad += "\"" + fileList[i] + "\", \"" + pageList[i] + "\"";
-        //        if (i + 1 == fileList.Count)
-        //        {
-        //            payLoad += "]}";
-        //            break;
-        //        }
-        //        payLoad += ",";
-        //    }
-
-        //    var client = new RestClient(fileSentUrl);
-        //    client.Timeout = -1;
-        //    var request = new RestRequest(Method.POST);
-        //    request.AddHeader("Content-Type", "application/json");
-        //    request.AddHeader("Content-Type", "application/json");
-        //    request.AddParameter("application/json,application/json", payLoad, ParameterType.RequestBody);
-        //    IRestResponse response = client.Execute(request);
-        //    if (response.Content.Contains("status"))
-        //    {
-        //        dynamic res = JObject.Parse(response.Content.ToString());
-        //        if (res.status == "ok")
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
-
+        
     }
 }

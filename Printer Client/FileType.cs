@@ -11,36 +11,22 @@ namespace Printer_Client
         public string file_name { get; }
         public double size { get; } //in mega byte
         public int page_count { get; } 
-        public DateTime creation_time { get; }
-        private bool isNow;  // is created now
-        public bool isReady; // false if unable to be download from onlne
-       
+        public string creation_time { get; }
+        public bool isFromServer { get; } // false if unable to be download from onlne
+        public int index;
+
         private FileType() { } //default constructor cannot be called
-        public FileType(string name, double size, int count, DateTime time)
+        public FileType(string name, double size, int count, string time, bool isFromServer)
         {
             this.file_name = name;
             this.size = size;
             this.page_count = count;
             this.creation_time = time;
-            this.isNow = false;
-        }
-        public FileType(string name, double size, int count)
-        {
-            this.file_name = name;
-            this.size = size;
-            this.page_count = count;
-            this.creation_time = DateTime.Now;
-            this.isNow = true;
+            this.isFromServer = isFromServer;
         }
 
-        public bool isCreatedNow() { return this.isNow;  }
+       
         
-               //generate payload string for removing this file from server
-        public string getDelPayload()
-        {
-            string payload = "initial";
-            return payload;
-        }
 
         public override bool Equals(Object obj)
         {

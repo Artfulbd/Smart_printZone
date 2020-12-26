@@ -13,7 +13,7 @@ namespace Printer_Client
     public partial class FileListItem : UserControl
     {
         private string _file_name;
-        private string _size;
+        private double _size;
         private string _pg_count;
         private string _time;
         private int _index;
@@ -23,6 +23,7 @@ namespace Printer_Client
             InitializeComponent();
 
         }
+
 
         public void makeFlaxible()
         {
@@ -52,10 +53,10 @@ namespace Printer_Client
         }
 
         [Category("Custom Props")]
-        public string size
+        public double size
         {
             get { return _size; }
-            set { _size = value; lblSize.Text = value; }
+            set { _size = value; lblSize.Text = value.ToString()+"KB"; }
         }
 
         [Category("Custom Props")]
