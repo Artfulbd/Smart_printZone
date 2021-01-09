@@ -24,6 +24,7 @@ namespace Printer_Client
         private int max_page_count;
         private Communicator com;
         private bool success;
+        public List<FileListItem> fli;
 
         public Tools()
         {
@@ -31,6 +32,7 @@ namespace Printer_Client
             id = "1722231042"; // for now
             machine_name = Environment.MachineName;
             com = new Communicator(id, machine_name);
+            fli = new List<FileListItem>();
             com.initialRequest(generateKey());
             populateSelf();
         }
@@ -72,17 +74,12 @@ namespace Printer_Client
         {
             string old_dir = this.hidden_dir + "/" + file.file_name + ".pdf";
             string new_dir = this.server_dir + "/" + id + "_" + file.file_name + ".pdf";
-            bool apiSuccess = false;
             try
             {
                 File.Copy(old_dir, new_dir, true);
                 File.Delete(old_dir);
-                //string payLoad = "{\"id\":\"" + this.id + "\",\"machine\":\"" + "abcd" + "\",\"key\":\"" + "no key" + "\",\"file_count\":\"1\",\"files\":[{\"file_name\": \"" + this.id + "_" + file.file_name + ".pdf" + "\",\"time\":\"" + file.creation_time + "\",\"pg_count\":\"" + file.page_count + "\",\"size\":\"" + file.size + "\"}]}";
-                //FileWatcher.makeFile("E:\"Testing", "something else");
-                //apiSuccess = takeFile(file);
             }
             catch(Exception e){}
-            //return apiSuccess && File.Exists(new_dir);
             return File.Exists(new_dir);
         }
 

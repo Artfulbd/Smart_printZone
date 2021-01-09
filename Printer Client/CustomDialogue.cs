@@ -52,5 +52,6 @@ namespace Printer_Client
             get { return _pg_count; }
             set { _pg_count = value; lblPageCount.Text = value; }
         }
+
     }
 }

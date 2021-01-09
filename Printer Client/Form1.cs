@@ -18,7 +18,7 @@ namespace Printer_Client
         private Tools tool;
         private FileWatcher fw;
         private delegate void PopulateFileListItemCallback(FileType file);
-        private delegate void RemoveFromFileListItemCallback(FileType file);
+        private delegate void RemoveFromFileListItemCallback(FileListItem fl);
         public Dashboard()
         {
             InitializeComponent();
@@ -112,7 +112,7 @@ namespace Printer_Client
             cd.ShowDialog();
             if (cd.DialogResult.Equals(DialogResult.OK))
             {
-                removeFromFileListItem(file);
+                //removeFromFileListItem(file);
             }
 
         }
@@ -209,7 +209,6 @@ namespace Printer_Client
             if (this.usr.addFile(file))
             {
                 populateFileListItem(file);
-
             }
             else
             {
@@ -218,22 +217,7 @@ namespace Printer_Client
         }
 
 
-        private void removeFromFileListItem(FileType file)
-        {
-            if (this.flowLayoutPanel.InvokeRequired)
-            {
-                RemoveFromFileListItemCallback d = new RemoveFromFileListItemCallback(removeFromFileListItem);
-                this.Invoke(d, new object[] { file });
-            }
-            else
-            {
-                // modifi it later on
-                // now only removes last item
-                int toBeRemoved = this.flowLayoutPanel.Controls.Count - 1;
-                if (toBeRemoved > -1)
-                    this.flowLayoutPanel.Controls.RemoveAt(toBeRemoved);
-            }
-        }
+        
 
         private void populateFileListItem(FileType file)
         {
@@ -244,19 +228,44 @@ namespace Printer_Client
             }
             else
             {
-                FileListItem fl = new FileListItem();
+                FileListItem fl = new FileListItem();                
+                fl.FileRemoverEnent += Fl_FileRemoverEnent;
                 fl.index = flowLayoutPanel.Controls.Count;
                 fl.file_name = file.file_name;
                 fl.page_count = file.page_count.ToString();
                 fl.time = file.creation_time;
                 fl.size = file.size;
+                fl.fileListItem = fl;
+                tool.fli.Add(fl);
                 this.flowLayoutPanel.Controls.Add(fl);
             }
         }
 
-        
+        private void Fl_FileRemoverEnent(object sender, FileListItem fl)
+        {
+            removeFromFileListItem(fl);
+            // call api
+        }
 
-        
+        private void removeFromFileListItem(FileListItem fl)
+        {
+            if (this.flowLayoutPanel.InvokeRequired)
+            {
+                RemoveFromFileListItemCallback d = new RemoveFromFileListItemCallback(removeFromFileListItem);
+                this.Invoke(d, new object[] { fl });
+            }
+            else
+            {
+                this.tool.fli.Remove(fl);
+                this.flowLayoutPanel.Controls.Clear();
+                for(int i = 0; i < this.tool.fli.Count; i++)
+                {
+                    this.tool.fli[i].index = i;
+                    this.flowLayoutPanel.Controls.Add(this.tool.fli[i]);
+                }
+            }
+        }
+
         private void btnRemove_Click(object sender, EventArgs e)
         {
             //usr.removeFile(listBox1, new FileType("Testing", 0, 0, DateTime.Now));

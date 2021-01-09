@@ -12,11 +12,13 @@ namespace Printer_Client
 {
     public partial class FileListItem : UserControl
     {
+        public event EventHandler<FileListItem> FileRemoverEnent;
         private string _file_name;
         private double _size;
         private string _pg_count;
         private string _time;
         private int _index;
+        private FileListItem _self;
 
         public FileListItem()
         {
@@ -24,6 +26,12 @@ namespace Printer_Client
 
         }
 
+
+        public FileListItem fileListItem
+        {
+            get { return _self; }
+            set { _self = value;}
+        }
 
         public void makeFlaxible()
         {
@@ -73,5 +81,9 @@ namespace Printer_Client
             set { _time = value; lblTime.Text = value; }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.FileRemoverEnent?.Invoke(this, this._self);
+        }
     }
 }
