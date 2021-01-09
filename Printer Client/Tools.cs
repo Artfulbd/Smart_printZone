@@ -13,7 +13,7 @@ namespace Printer_Client
     {
         public event EventHandler<FileType> PageLimitExceedsEvent;
         public event EventHandler<FileType> TotalFileSizeExceedsEvent;
-        public event EventHandler<FileType> BothFileSizeAndLimitExceedsEvent;
+        public event EventHandler<FileType> TotalFileCountExceedsEvent;
         private string id;
         private string machine_name;
         private string temp_dir;
@@ -21,7 +21,8 @@ namespace Printer_Client
         private string server_dir;
         private double max_size_total;
         private int max_file_count;
-        private static Communicator com;
+        private int max_page_count;
+        private Communicator com;
         private bool success;
 
         public Tools()
@@ -29,9 +30,14 @@ namespace Printer_Client
             //id = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             id = "1722231042"; // for now
             machine_name = Environment.MachineName;
-            com = new Communicator();
-            com.initialRequest(machine_name, id, "nothing");
+            com = new Communicator(id, machine_name);
+            com.initialRequest(generateKey());
             populateSelf();
+        }
+
+        private string generateKey()
+        {
+            return "nothing";
         }
 
         public double totalFileSizeMax() { return max_size_total; }
@@ -44,7 +50,7 @@ namespace Printer_Client
             int page_count = new iTextSharp.text.pdf.PdfReader(fullPath).NumberOfPages;
             double size = new System.IO.FileInfo(fullPath).Length / 1024;
             FileType file = new FileType(Path.GetFileNameWithoutExtension(fullPath), size, page_count, formatedTime, false);
-            string new_dir = this.server_dir + "/" + id + "_" + file.file_name + ".pdf";
+            string new_dir = this.hidden_dir + "/" + file.file_name + ".pdf";
             try
             {
                 File.Copy(fullPath, new_dir, true);
@@ -54,61 +60,89 @@ namespace Printer_Client
         }
         public string getHiddenDir()
         {
-            return hidden_dir;
+            return this.hidden_dir;
         }
 
         public string getTempDir()
         {
-            return temp_dir;
+            return this.temp_dir;
         }
+
         public bool sendFileToServer(FileType file)
         {
             string old_dir = this.hidden_dir + "/" + file.file_name + ".pdf";
             string new_dir = this.server_dir + "/" + id + "_" + file.file_name + ".pdf";
+            bool apiSuccess = false;
             try
             {
                 File.Copy(old_dir, new_dir, true);
                 File.Delete(old_dir);
+                //string payLoad = "{\"id\":\"" + this.id + "\",\"machine\":\"" + "abcd" + "\",\"key\":\"" + "no key" + "\",\"file_count\":\"1\",\"files\":[{\"file_name\": \"" + this.id + "_" + file.file_name + ".pdf" + "\",\"time\":\"" + file.creation_time + "\",\"pg_count\":\"" + file.page_count + "\",\"size\":\"" + file.size + "\"}]}";
+                //FileWatcher.makeFile("E:\"Testing", "something else");
+                //apiSuccess = takeFile(file);
             }
             catch(Exception e){}
+            //return apiSuccess && File.Exists(new_dir);
             return File.Exists(new_dir);
         }
-        public bool isViolating(FileType file, int nowTotalHas, double nowTotalSize)
+
+        
+
+        public bool takeFile(FileType file)
         {
-            bool sizeViolation = false;
-            bool limitViolation = false;
-            if (nowTotalHas + 1 > this.max_file_count)
-            {
-                // violated page limit
-                limitViolation =  true;
-            }
-            if(nowTotalSize + file.size > this.max_size_total)
-            {
-                //violated max file size limit
-                sizeViolation = true;
-            }
-
-
-            if(limitViolation && sizeViolation)
-            {
-                BothFileSizeAndLimitExceedsEvent?.Invoke(this, file);
-            }
-            else if(limitViolation)
-            {
-                PageLimitExceedsEvent?.Invoke(this, file);
-            }
-            else if(sizeViolation)
-            {
-                TotalFileSizeExceedsEvent?.Invoke(this, file);
-            }
             
-            return limitViolation || sizeViolation;
+            IRestResponse response = this.com.makeTakeFileRequest(generateKey(), file);
+            bool success = false;
+            if ((int)response.StatusCode == 200 && response.Content.Contains("status"))
+            {
+                dynamic res = JObject.Parse(response.Content.ToString());
+                
+                    try
+                    {
+                        success = (res.status == "1" && res.msg == "success");
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        success = false;
+                    }
+            }
+            else
+            {
+                success = false;
+            }
+            // true if file successfully added to database via API;
+            return success;
         }
 
-        public string getId()
+        public bool isViolating(FileType file, int nowTotalPage, int nowTotalHas, double nowTotalSize)
+        {
+            if (this.max_file_count > 0 && nowTotalPage + file.page_count > this.max_page_count)
+            {
+                // violated page limit
+                PageLimitExceedsEvent?.Invoke(this, file);
+                return true;
+            }
+            if (this.max_file_count > 0 && nowTotalHas + 1 > this.max_file_count)
+            {
+                // violated page limit
+                TotalFileCountExceedsEvent?.Invoke(this, file);
+                return true;
+            }
+            if(this.max_size_total > 0 && nowTotalSize + file.size > this.max_size_total)
+            {
+                //violated max file size limit
+                TotalFileSizeExceedsEvent?.Invoke(this, file);
+                return true;
+            }
+            return false;
+        }
+
+        public String getId()
         {
             return id;
         }
+
         private void populateSelf()
         {
             IRestResponse response = com.getInitialRespons();
@@ -126,7 +160,9 @@ namespace Printer_Client
                         this.server_dir = res.server;
                         this.max_size_total = res.maxSizeTotal;
                         this.max_file_count = res.maxFileCount;
-                    }catch(Exception ex)
+                        this.max_page_count = res.pgLeft;
+                    }
+                    catch(Exception ex)
                     {
                         throw new Exception("API respons not appropriate.");
                     }

@@ -43,7 +43,7 @@ namespace Printer_Client
         public string size
         {
             get { return _size; }
-            set { _size = value; lblSize.Text = value; }
+            set { _size = value; lblSize.Text = value + "KB"; }
         }
 
         [Category("Custom Props")]

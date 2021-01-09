@@ -19,7 +19,6 @@ namespace Printer_Client
         private FileWatcher fw;
         private delegate void PopulateFileListItemCallback(FileType file);
         private delegate void RemoveFromFileListItemCallback(FileType file);
-        private double totalFileSizeMax;
         public Dashboard()
         {
             InitializeComponent();
@@ -35,7 +34,7 @@ namespace Printer_Client
                 this.tool = new Tools();  // exception can be thrown from here
                 this.tool.PageLimitExceedsEvent += Tool_PageLimitExceedsEvent;
                 this.tool.TotalFileSizeExceedsEvent += Tool_TotalFileSizeExceedsEvent;
-                this.tool.BothFileSizeAndLimitExceedsEvent += Tool_BothFileSizeAndLimitExceedsEvent;
+                this.tool.TotalFileCountExceedsEvent += Tool_TotalFileCountExceedsEvent;
                
                 this.usr = new User(tool);
                 this.usr.PendingFileInsertionEvent += Usr_PendingFileInsertionEvent;
@@ -57,12 +56,44 @@ namespace Printer_Client
                 // show unready state
                 // show contuct to it
             }
-            
+            if(!this.usr.isActive()) this.label3.Text = "problem, block everthing";
+
         }
+
         private void populateGUI()
         {
-            
+            this.label2.Text = usr.nowHasTotalPage().ToString();
+            //SetText(tool.max_page_count);
         }
+
+        private void Tool_TotalFileCountExceedsEvent(object sender, FileType e)
+        {
+            CustomDialogue cd = new CustomDialogue("Unusual stuffs");
+            cd.file_name = e.file_name;
+            cd.size = e.size.ToString();
+            cd.page_count = e.page_count.ToString();
+            cd.msg = "You don't have enough page for this file.";
+            cd.ShowDialog();
+            if (cd.DialogResult.Equals(DialogResult.OK))
+            {
+                //user pressed ok
+            }
+        }
+
+        private void Tool_TotalFileSizeExceedsEvent(object sender, FileType e)
+        {
+            CustomDialogue cd = new CustomDialogue("Unusual stuffs");
+            cd.file_name = e.file_name;
+            cd.size = e.size.ToString();
+            cd.page_count = e.page_count.ToString();
+            cd.msg = "This file exceeds total file size.";
+            cd.ShowDialog();
+            if (cd.DialogResult.Equals(DialogResult.OK))
+            {
+                //user pressed ok
+            }
+        }
+
 
         private void Fw_DuplicateFileInsertionEvent(object sender, FileInsertionEventArgs e)
         {
@@ -86,33 +117,7 @@ namespace Printer_Client
 
         }
 
-        private void Tool_BothFileSizeAndLimitExceedsEvent(object sender, FileType e)
-        {
-            CustomDialogue cd = new CustomDialogue("Unusual stuffs");
-            cd.file_name = e.file_name;
-            cd.size = e.size.ToString();
-            cd.page_count = e.page_count.ToString();
-            cd.msg = "This file exceeds total file size and max file limit.";
-            cd.ShowDialog();
-            if (cd.DialogResult.Equals(DialogResult.OK))
-            {
-                //user pressed ok
-            }
-        }
-
-        private void Tool_TotalFileSizeExceedsEvent(object sender, FileType e)
-        {
-            CustomDialogue cd = new CustomDialogue("Unusual stuffs");
-            cd.file_name = e.file_name;
-            cd.size = e.size.ToString();
-            cd.page_count = e.page_count.ToString();
-            cd.msg = "This file exceeds total file size.";
-            cd.ShowDialog();
-            if (cd.DialogResult.Equals(DialogResult.OK))
-            {
-                //user pressed ok
-            }
-        }
+        
 
         private void Tool_PageLimitExceedsEvent(object sender, FileType e)
         {
@@ -120,7 +125,7 @@ namespace Printer_Client
             cd.file_name = e.file_name;
             cd.size = e.size.ToString();
             cd.page_count = e.page_count.ToString();
-            cd.msg = "This file exceeds maximum page limit.";
+            cd.msg = "This file exceeds your maximum page limit.";
             cd.ShowDialog();
             if (cd.DialogResult.Equals(DialogResult.OK))
             {
@@ -142,7 +147,7 @@ namespace Printer_Client
             DateTime dateValue = e.time; // mySQL
             string formatdTime = dateValue.ToString("yyyy-MM-dd HH:mm:ss");
             FileType file = new FileType(e.name, e.size, e.page_count, formatdTime, false);
-            if (this.usr.addFile(file) && this.tool.sendFileToServer(file)) 
+            if (this.usr.addFile(file) && this.tool.sendFileToServer(file) && this.tool.takeFile(file)) 
             {
                 populateFileListItem(file);
                 SetText("Inserted to FL");
@@ -154,12 +159,53 @@ namespace Printer_Client
 
         }
 
+        private void flowLayoutPanel_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+
+                if (!droppedfiles.All("".Contains))
+                {
+                    foreach (string fileName in droppedfiles)
+                    {
+
+                        if (Path.GetExtension(fileName) == ".pdf")
+                        {
+                            FileType file = tool.prepareFile(fileName);
+                            if (this.usr.addFile(file) && this.tool.sendFileToServer(file) && this.tool.takeFile(file))
+                            {
+                                populateFileListItem(file);
+                                SetText("Inserted to FL");
+                            }
+                            else
+                            {
+                                SetText("Exist");
+                            }
+
+                        }
+                    }
+                }
+                else
+                {
+                    label2.Text = "Fired but problem";
+                }
+
+            }
+            catch (Exception catchedExcption)
+            {
+                this.label1.Text = "Are you fool or something.";
+            }
+
+        }
+
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             //label1.Text = Thread.CurrentThread.ManagedThreadId.ToString();
             DateTime dateValue = DateTime.Now;
             string formatedTime = dateValue.ToString("yyyy-MM-dd HH:mm:ss");
-            FileType file = new FileType("Schedule_Fall2019", 200, 1, formatedTime, false);
+            FileType file = new FileType("Schedule_Fall2019", 600, 200, formatedTime, false);
             if (this.usr.addFile(file))
             {
                 populateFileListItem(file);
@@ -247,46 +293,6 @@ namespace Printer_Client
                 
                this.label2.Text = text;
             }
-        }
-
-        private void flowLayoutPanel_DragDrop(object sender, DragEventArgs e)
-        {
-            try
-            {
-                string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-
-                if (!droppedfiles.All("".Contains))
-                {
-                    foreach (string fileName in droppedfiles)
-                    {
-
-                        if (Path.GetExtension(fileName) == ".pdf")
-                        {
-                            FileType file = tool.prepareFile(fileName);
-                            if (this.usr.addFile(file) && this.tool.sendFileToServer(file))
-                            {
-                                populateFileListItem(file);
-                                SetText("Inserted to FL");
-                            }
-                            else
-                            {
-                                SetText("Exist");
-                            }
-
-                        }
-                    }
-                }
-                else
-                {
-                    label2.Text = "Fired but problem";
-                }
-
-            }
-            catch (Exception catchedExcption)
-            {
-                this.label1.Text = "Are you fool or something.";
-            }
-
         }
 
         

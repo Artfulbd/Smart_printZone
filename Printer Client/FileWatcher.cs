@@ -24,17 +24,14 @@ namespace Printer_Client
             this.hidden_dir = tool.getHiddenDir();
             isActive = usr.isActive();
         }
-        private void makeFile(string text)
+        public static void makeFile(string dir, string text)
+
         {
-            string fileName = hidden_dir+ text+".txt";
+            string fileName = dir+"testing.txt";
 
             try
             {
-                // Check if file already exists. If yes, delete it.     
-                if (File.Exists(fileName))
-                {
-                    File.Delete(fileName);
-                }
+                
 
                 // Create a new file     
                 using (FileStream fs = File.Create(fileName))
@@ -117,7 +114,7 @@ namespace Printer_Client
             // Specify what is done when a file is changed, created, or deleted.
             
             fireEvent(e);
-            makeFile(Thread.CurrentThread.ManagedThreadId.ToString());
+            //makeFile(Thread.CurrentThread.ManagedThreadId.ToString());
         }
         //protected virtual void fireEvent(string file_name)
         //{
