@@ -7,11 +7,11 @@
 @endif
 @if(session('success'))
     <div class="alert alert-success">
-        {{session('success')}}
+        <i class="fa fa-check-square mr-2"> </i>     {{session('success')}}
     </div>
 @endif
 @if(session('error'))
     <div class="alert alert-danger">
-        {{session('error')}}
+        <i class="fa fa-info-circle mr-2"> </i>      {{session('error')}}
     </div>
 @endif

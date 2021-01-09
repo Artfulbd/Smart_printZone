@@ -20,14 +20,21 @@
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
           <div class="dropdown-header text-center">
             <img class="img-md rounded-circle" src="assets/images/faces/face8.jpg" alt="Profile image">
-            <p class="mb-1 mt-3 font-weight-semibold">Amik Rahman</p>
-            <p class="font-weight-light text-muted mb-0">amiknsu@gmail.com</p>
+            <p class="mb-1 mt-3 font-weight-semibold">{{auth()->user()->name}}</p>
+            <p class="font-weight-light text-muted mb-0">{{auth()->user()->email}}</p>
           </div>
           <a class="dropdown-item">My Profile <span class="badge badge-pill badge-danger">1</span><i class="dropdown-item-icon ti-dashboard"></i></a>
           <a class="dropdown-item">Messages<i class="dropdown-item-icon ti-comment-alt"></i></a>
           <a class="dropdown-item">Activity<i class="dropdown-item-icon ti-location-arrow"></i></a>
           <a class="dropdown-item">FAQ<i class="dropdown-item-icon ti-help-alt"></i></a>
-          <a class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+          <a class="dropdown-item" href="{{ route('logout') }}"
+             onclick="event.preventDefault();
+             document.getElementById('logout-form').submit();" >Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
         </div>
       </li>
     </ul>

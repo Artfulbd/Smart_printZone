@@ -4,11 +4,12 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>NSU Smart Print Zone</title>
+    <title>{{config('app.name','NSU Smart Print Zone')}}</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendors/iconfonts/ionicons/dist/css/ionicons.css">
     <link rel="stylesheet" href="assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="assets/vendors/iconfonts/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.addons.css">
     <!-- endinject -->
@@ -20,7 +21,7 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="assets/css/demo_1/style.css">
     <!-- End Layout styles -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico" />
+    <link rel="shortcut icon" href="assets/images/nsu_logo_title.png" />
 </head>
 <body>
 <div class="container-scroller">
@@ -63,6 +64,27 @@
 <!-- End plugin js for this page-->
 <!-- inject:js -->
 <script src="assets/js/shared/off-canvas.js"></script>
+
+{{--
+<script>
+    var btnContainer = document.getElementById("sidebar");
+
+
+    // Get all buttons with class="btn" inside the container
+    var btns = btnContainer.getElementsByClassName("nav-link");
+
+    // Loop through the buttons and add the active class to the current/clicked button
+    for (var i = 0; i < btns.length; i++) {
+
+        btns[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("bg-dark");
+            console.log(current);
+            current[0].className = current[0].className.replace(" bg-dark", "");
+            this.className += " bg-dark";
+        });
+    }
+</script>
+--}}
 
 @yield('welcome_message')
 @yield('filename_bootstrap_js')

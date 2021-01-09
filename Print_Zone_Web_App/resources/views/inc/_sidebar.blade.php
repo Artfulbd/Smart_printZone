@@ -1,4 +1,4 @@
-<nav class="sidebar sidebar-offcanvas" id="sidebar" style="background: linear-gradient(to top, #e388bf, #1859cc);" >
+<nav class="sidebar sidebar-offcanvas" id="sidebar" style="background: linear-gradient(to top, #e388bf, #1a4aa1);" >
   <ul class="nav">
     <li class="nav-item nav-profile">
       <a href="#" class="nav-link">
@@ -7,7 +7,7 @@
           <div class="dot-indicator bg-success"></div>
         </div>
         <div class="text-wrapper">
-          <p class="profile-name">Amik Rahman</p>
+          <p class="profile-name">{{auth()->user()->name}}</p>
           <p class="designation">Undergrad Student</p>
         </div>
       </a>
@@ -46,7 +46,7 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/">
+      <a class="nav-link" href="{{route('student.print_queue')}}">
         <i class="menu-icon typcn typcn-th-large-outline"></i>
         <span class="menu-title">Print Queue</span>
       </a>
@@ -87,3 +87,5 @@
     </li>
   </ul>
 </nav>
+
+

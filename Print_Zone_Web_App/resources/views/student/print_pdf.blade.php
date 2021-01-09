@@ -19,7 +19,6 @@
                             <div class="card-body">
                                 <form method="POST" action="/print_file_cmd" enctype="multipart/form-data">
                                     @csrf
-
                                     {{-------------------File Upload Starts-----------------}}
                                     <div class="form-group row">
                                         <label for="first_name"
@@ -29,7 +28,7 @@
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input  @error('uploaded_file') is-invalid @enderror" id="uploaded_file" name="uploaded_file" >
                                                 <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-                                                <div class="invalid-feedback">{{ $errors->first('uploaded_file') }}</div>
+                                                <div class="invalid-feedback font-weight-bold">{{ $errors->first('uploaded_file') }}</div>
                                             </div>
                                         </div>
                                     </div>
