@@ -14,6 +14,7 @@ namespace Printer_Client
         public event EventHandler<FileType> PageLimitExceedsEvent;
         public event EventHandler<FileType> TotalFileSizeExceedsEvent;
         public event EventHandler<FileType> TotalFileCountExceedsEvent;
+        public event EventHandler<string> IdDeactivatedEvent;
         private string id;
         private string machine_name;
         private string temp_dir;
@@ -29,7 +30,8 @@ namespace Printer_Client
         public Tools()
         {
             //id = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            id = "1722231042"; // for now
+            id = "1722231"; // for now
+            //id = "1721277";
             machine_name = Environment.MachineName;
             com = new Communicator(id, machine_name);
             fli = new List<FileListItem>();
@@ -83,9 +85,43 @@ namespace Printer_Client
             return File.Exists(new_dir);
         }
 
+        public bool removeFile(Object sender, FileType file)
+        {
+            IRestResponse response = this.com.makeRemoveFileRequest(generateKey(), file);
+            bool success = false;
+            if ((int)response.StatusCode == 200 && response.Content.Contains("status"))
+            {
+                dynamic res = JObject.Parse(response.Content.ToString());
+
+                try
+                {
+                    if (res.status == "1" && res.deleted == "1" && res.msg == "success")
+                    {
+                        success = true;
+                    }
+                    else if (res.status == "0" && res.active == "0")
+                    {
+                        success = false;
+                        this.IdDeactivatedEvent?.Invoke(sender, "Id deactivated");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    // means problem on API
+                    success = false;
+                }
+            }
+            else
+            {
+                success = false;
+            }
+            // true if file successfully added to database via API;
+            return success;
+        }
         
 
-        public bool takeFile(FileType file)
+        public bool takeFile(Object sender, FileType file)
         {
             
             IRestResponse response = this.com.makeTakeFileRequest(generateKey(), file);
@@ -96,7 +132,21 @@ namespace Printer_Client
                 
                     try
                     {
-                        success = (res.status == "1" && res.msg == "success");
+                        if(res.status == "1" && res.msg == "success")
+                        {
+                            success = true;
+                        }
+                        else if(res.status == "1" && res.active == "0")
+                        {
+                            success = false;
+                            string dir = this.server_dir + "/" + id + "_" + file.file_name + ".pdf";
+                        
+                            if(File.Exists(dir))
+                            {
+                                File.Delete(dir);
+                            }
+                            this.IdDeactivatedEvent?.Invoke(sender,"Id deactivated");
+                        }
                         
                     }
                     catch (Exception ex)
@@ -140,16 +190,17 @@ namespace Printer_Client
             return id;
         }
 
-        private void populateSelf()
+        public void populateSelf()
         {
             IRestResponse response = com.getInitialRespons();
 
             if ((int)response.StatusCode == 200 && response.Content.Contains("status"))
             {
                 dynamic res = JObject.Parse(response.Content.ToString());
-                if (res.status == "1" && res.active == "1")
+
+                try
                 {
-                    try
+                    if (res.status == "1" && res.active == "1")
                     {
                         this.success = true;
                         this.temp_dir = res.temp;
@@ -158,16 +209,22 @@ namespace Printer_Client
                         this.max_size_total = res.maxSizeTotal;
                         this.max_file_count = res.maxFileCount;
                         this.max_page_count = res.pgLeft;
+
                     }
-                    catch(Exception ex)
+                    //else if (res.status == "1" && res.active == "0")
+                    //{  //id deactivated
+                    //    success = false;
+                    //}
+                    else
                     {
-                        throw new Exception("API respons not appropriate.");
+                        success = false;
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    success = false;
+                    throw new Exception("API respons not appropriate.");
                 }
+
             }
             else
             {

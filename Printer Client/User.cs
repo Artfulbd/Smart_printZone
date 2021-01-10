@@ -50,6 +50,11 @@ namespace Printer_Client
             }
             return false;
         }
+
+        public bool removeFromFileList(FileType file)
+        {
+            return file_list.Remove(file);
+        }
         
 
         public void getCredentials()

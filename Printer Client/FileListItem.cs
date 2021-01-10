@@ -19,13 +19,27 @@ namespace Printer_Client
         private string _time;
         private int _index;
         private FileListItem _self;
+        private FileType _file;
 
-        public FileListItem()
+        public FileListItem(FileType file)
         {
             InitializeComponent();
-
+            _file = file;
+            populateSelf();
         }
 
+        private void populateSelf()
+        {
+            lblFileName.Text = _file_name = _file.file_name;
+            lblSize.Text = (_size = _file.size).ToString() + "KB";
+            lblPageCount.Text = _pg_count = _file.page_count.ToString();
+            lblTime.Text = _time = _file.creation_time;
+        }
+
+        public FileType giveFile()
+        {
+            return _file;
+        }
 
         public FileListItem fileListItem
         {
@@ -53,6 +67,11 @@ namespace Printer_Client
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.FileRemoverEnent?.Invoke(this, this._self);
+        }
+        /*
         [Category("Custom Props")]
         public string file_name
         {
@@ -79,11 +98,8 @@ namespace Printer_Client
         {
             get { return _time; }
             set { _time = value; lblTime.Text = value; }
-        }
+        }*/
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.FileRemoverEnent?.Invoke(this, this._self);
-        }
+
     }
 }

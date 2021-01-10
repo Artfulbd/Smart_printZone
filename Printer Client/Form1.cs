@@ -35,6 +35,7 @@ namespace Printer_Client
                 this.tool.PageLimitExceedsEvent += Tool_PageLimitExceedsEvent;
                 this.tool.TotalFileSizeExceedsEvent += Tool_TotalFileSizeExceedsEvent;
                 this.tool.TotalFileCountExceedsEvent += Tool_TotalFileCountExceedsEvent;
+                this.tool.IdDeactivatedEvent += Tool_IdDeactivatedEvent;
                
                 this.usr = new User(tool);
                 this.usr.PendingFileInsertionEvent += Usr_PendingFileInsertionEvent;
@@ -60,8 +61,29 @@ namespace Printer_Client
 
         }
 
+        private void Tool_IdDeactivatedEvent(object sender, string e)
+        {
+            showIdeDeactivated();
+            CustomDialogue cd = new CustomDialogue("Notice");
+            cd.disable();
+            cd.msg = "Your ID is deactivated";
+            cd.ShowDialog();
+        }
+
+        private void showIdeDeactivated()
+        {
+            //don't show dialog, also disabale drag and drop
+            CustomDialogue cd = new CustomDialogue("Notice");
+            cd.disable();
+            cd.msg = "Your ID is deactivated";
+            cd.ShowDialog();
+        }
         private void populateGUI()
         {
+            //if(!this.usr.isActive())
+            //{
+            //    showIdeDeactivated();
+            //}
             this.label2.Text = usr.nowHasTotalPage().ToString();
             //SetText(tool.max_page_count);
         }
@@ -147,7 +169,7 @@ namespace Printer_Client
             DateTime dateValue = e.time; // mySQL
             string formatdTime = dateValue.ToString("yyyy-MM-dd HH:mm:ss");
             FileType file = new FileType(e.name, e.size, e.page_count, formatdTime, false);
-            if (this.usr.addFile(file) && this.tool.sendFileToServer(file) && this.tool.takeFile(file)) 
+            if (this.usr.addFile(file) && this.tool.sendFileToServer(file) && this.tool.takeFile(this, file)) 
             {
                 populateFileListItem(file);
                 SetText("Inserted to FL");
@@ -173,7 +195,7 @@ namespace Printer_Client
                         if (Path.GetExtension(fileName) == ".pdf")
                         {
                             FileType file = tool.prepareFile(fileName);
-                            if (this.usr.addFile(file) && this.tool.sendFileToServer(file) && this.tool.takeFile(file))
+                            if (this.usr.addFile(file) && this.tool.sendFileToServer(file) && this.tool.takeFile(this, file))
                             {
                                 populateFileListItem(file);
                                 SetText("Inserted to FL");
@@ -228,13 +250,9 @@ namespace Printer_Client
             }
             else
             {
-                FileListItem fl = new FileListItem();                
+                FileListItem fl = new FileListItem(file);                
                 fl.FileRemoverEnent += Fl_FileRemoverEnent;
                 fl.index = flowLayoutPanel.Controls.Count;
-                fl.file_name = file.file_name;
-                fl.page_count = file.page_count.ToString();
-                fl.time = file.creation_time;
-                fl.size = file.size;
                 fl.fileListItem = fl;
                 tool.fli.Add(fl);
                 this.flowLayoutPanel.Controls.Add(fl);
@@ -243,8 +261,21 @@ namespace Printer_Client
 
         private void Fl_FileRemoverEnent(object sender, FileListItem fl)
         {
-            removeFromFileListItem(fl);
-            // call api
+            if(this.tool.removeFile(this, fl.giveFile()))
+            {
+                removeFromFileListItem(fl);
+            }
+            else
+            {
+                FileType file = fl.giveFile();
+                CustomDialogue cd = new CustomDialogue("Error");
+                cd.file_name = file.file_name;
+                cd.size = file.size.ToString();
+                cd.page_count = file.page_count.ToString();
+                cd.msg = "You don't have enough page for this file.";
+
+            }
+            
         }
 
         private void removeFromFileListItem(FileListItem fl)
@@ -257,6 +288,7 @@ namespace Printer_Client
             else
             {
                 this.tool.fli.Remove(fl);
+                this.usr.removeFromFileList(fl.giveFile());
                 this.flowLayoutPanel.Controls.Clear();
                 for(int i = 0; i < this.tool.fli.Count; i++)
                 {

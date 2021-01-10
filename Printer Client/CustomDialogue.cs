@@ -24,6 +24,15 @@ namespace Printer_Client
             this.lblTitel.Text = name;
         }
 
+        public void disable()
+        {
+            this.lblFileName.Visible = false;
+            this.lblPageCount.Visible = false;
+            this.lblSize.Visible = false;
+            this.label2.Visible = false;
+            this.label3.Visible = false;
+        }
+
 
         [Category("Custom Props")]
         public string msg

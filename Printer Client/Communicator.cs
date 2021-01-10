@@ -11,7 +11,7 @@ namespace Printer_Client
     {
         private string login_url = "http://localhost/pZone/commingin.php";  // initial data popukation
         private string take_file_url = "http://localhost/pZone/takeFiles.php";    // file sent to server request
-        private string rem_url = "http://localhost/pZone/removefile.php";    // file remove request
+        private string rem_file_url = "http://localhost/pZone/removefile.php";    // file remove request
         private string id, machineName;
         private IRestResponse res;
 
@@ -38,7 +38,13 @@ namespace Printer_Client
             string payLoad = "{\"id\":\"" + this.id + "\",\"pc_name\":\"" + this.machineName + "\",\"key\":\"" + key + "\",\"file_count\":\"1\",\"files\":[{\"file_name\": \"" +file.file_name + "\",\"time\":\"" + file.creation_time + "\",\"pg_count\":\"" + file.page_count + "\",\"size\":\"" + file.size + "\"}]}";
             return makeReq(this.take_file_url, payLoad);
         }
-        
+
+        public IRestResponse makeRemoveFileRequest(string key, FileType file)
+        {
+            string payLoad = "{\"id\":\"" + this.id + "\",\"pc_name\":\"" + this.machineName + "\",\"key\":\"" + key + "\",\"file_name\": \"" + file.file_name + "\",\"time\":\"" + file.creation_time + "\",\"pg_count\":\"" + file.page_count + "\",\"size\":\"" + file.size + "\"}";
+            return makeReq(this.rem_file_url, payLoad);
+        }
+
         // makes request 
         private IRestResponse makeReq(string url, string payLoad)
         {
@@ -52,11 +58,7 @@ namespace Printer_Client
 
         
 
-        public bool removeFile(string file_name)
-        {
-            //use del_url here
-            return true;
-        }
+        
 
         
     }
