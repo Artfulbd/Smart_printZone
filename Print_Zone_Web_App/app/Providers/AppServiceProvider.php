@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\facades\schema;
+use Illuminate\Support\Facades\Schema;
 //use mysql_xdevapi\Schema;
 
 class AppServiceProvider extends ServiceProvider

@@ -42,7 +42,7 @@
     <li class="nav-item">
       <a class="nav-link" href="/print_pdf">
         <i class="menu-icon typcn typcn-shopping-bag"></i>
-        <span class="menu-title">Print PDF</span>
+        <span class="menu-title">Upload PDF</span>
       </a>
     </li>
     <li class="nav-item">
@@ -85,6 +85,19 @@
         </ul>
       </div>
     </li>
+
+
+      <li class="nav-item">
+          <a class="nav-link" href="{{ route('logout') }}"
+             onclick="event.preventDefault();
+                   document.getElementById('logout-form').submit();">
+              <i class="menu-icon typcn typcn-shopping-bag"></i>
+              <span class="menu-title">Logout</span>
+          </a>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+              @csrf
+          </form>
+      </li>
   </ul>
 </nav>
 
