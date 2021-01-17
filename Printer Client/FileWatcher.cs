@@ -15,14 +15,15 @@ namespace Printer_Client
         private string type = "*.pdf";
         public bool isListening { get; private set; }
         private bool isActive;
-        static FileSystemWatcher watcher;
+        public FileSystemWatcher watcher;
         public event EventHandler<FileInsertionEventArgs> FileInsertionEvent;
         public event EventHandler<FileInsertionEventArgs> DuplicateFileInsertionEvent;
+        public event EventHandler<string> FileListeningEvent;
         public FileWatcher(User usr, Tools tool)
         {
             this.temp_dir = tool.getTempDir();
             this.hidden_dir = tool.getHiddenDir();
-            isActive = usr.isActive();
+            isActive = tool.isActive();
         }
         public static void makeFile(string dir, string text)
 
@@ -59,34 +60,25 @@ namespace Printer_Client
             }
         }
         
-        private void cleanDirectory()
+        private void cleanDirectory(string dir)
         {
-            if (Directory.Exists(this.temp_dir))
+            if (Directory.Exists(dir))
             {
-                System.IO.DirectoryInfo di = new DirectoryInfo(this.temp_dir);
+                System.IO.DirectoryInfo di = new DirectoryInfo(dir);
                 foreach (FileInfo file in di.GetFiles())
                 {
                     file.Delete();
                 }
             }
-            else Directory.CreateDirectory(this.temp_dir);
-
-            if (Directory.Exists(this.hidden_dir))
-            {
-                System.IO.DirectoryInfo di = new DirectoryInfo(this.hidden_dir);
-                foreach (FileInfo file in di.GetFiles())
-                {
-                    file.Delete();
-                }
-            }
-            else Directory.CreateDirectory(this.hidden_dir);
+            else Directory.CreateDirectory(dir);
 
         }
         public void listen()
         {
             if (this.isActive)
             {
-                cleanDirectory();
+                cleanDirectory(this.temp_dir);
+                cleanDirectory(this.hidden_dir);
                 watcher = new FileSystemWatcher(this.temp_dir);
                 // Watch for changes in LastAccess and LastWrite times, and
                 // the renaming of files.
@@ -112,18 +104,29 @@ namespace Printer_Client
         private void OnCreated(object source, FileSystemEventArgs e)
         {
             // Specify what is done when a file is changed, created, or deleted.
-            
-            fireEvent(e);
-            //makeFile(Thread.CurrentThread.ManagedThreadId.ToString());
+            //this.FileListeningEvent?.Invoke(this, e.Name);
+            //fireEvent(e);
+            string old = e.FullPath;
+            string new_dir = this.hidden_dir + "/" + e.Name;
+            try
+            {
+                Thread.Sleep(500);
+                File.Copy(old, new_dir, false);
+                Thread.Sleep(500);
+                File.Delete(old);
+                FileInsertionEvent?.Invoke(source, new FileInsertionEventArgs(new_dir));
         }
-        //protected virtual void fireEvent(string file_name)
-        //{
-        //    FileInsertionEvent?.Invoke(this, new FileInsertionEventArgs(file_name));
-        //}
+            catch (Exception ex)
+            {
+                DuplicateFileInsertionEvent?.Invoke(source, new FileInsertionEventArgs(new_dir));
+            }
+
+}
         private void fireEvent(FileSystemEventArgs e)
         {
+
             string old = e.FullPath;
-            string new_dir = this.hidden_dir +"/"+ e.Name;
+            string new_dir = this.hidden_dir + "/" + e.Name;
             try
             {
                 Thread.Sleep(500);
@@ -132,12 +135,11 @@ namespace Printer_Client
                 Thread.Sleep(500);
                 FileInsertionEvent?.Invoke(this, new FileInsertionEventArgs(new_dir));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 DuplicateFileInsertionEvent?.Invoke(this, new FileInsertionEventArgs(new_dir));
             }
-            
-            
+
         }
     }
 }

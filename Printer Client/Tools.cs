@@ -25,6 +25,7 @@ namespace Printer_Client
         private int max_page_count;
         private Communicator com;
         private bool success;
+        private bool is_active;
         public List<FileListItem> fli;
 
         public Tools()
@@ -43,7 +44,7 @@ namespace Printer_Client
         {
             return "nothing";
         }
-
+        public bool isActive() { return this.is_active; }
         public double totalFileSizeMax() { return max_size_total; }
         public int fileCountMax() { return max_file_count; }
 
@@ -97,12 +98,14 @@ namespace Printer_Client
                 {
                     if (res.status == "1" && res.deleted == "1" && res.msg == "success")
                     {
-                        success = true;
+                        return true;
                     }
                     else if (res.status == "0" && res.active == "0")
                     {
-                        success = false;
+                        this.success = true;
+                        this.is_active = false;
                         this.IdDeactivatedEvent?.Invoke(sender, "Id deactivated");
+                        return false;
                     }
 
                 }
@@ -134,19 +137,21 @@ namespace Printer_Client
                     {
                         if(res.status == "1" && res.msg == "success")
                         {
-                            success = true;
+                            return true;
                         }
                         else if(res.status == "1" && res.active == "0")
                         {
-                            success = false;
+                            this.success = true;
                             string dir = this.server_dir + "/" + id + "_" + file.file_name + ".pdf";
                         
                             if(File.Exists(dir))
                             {
                                 File.Delete(dir);
                             }
+                            this.is_active = false;
                             this.IdDeactivatedEvent?.Invoke(sender,"Id deactivated");
-                        }
+                            return false;
+                    }
                         
                     }
                     catch (Exception ex)
@@ -202,33 +207,32 @@ namespace Printer_Client
                 {
                     if (res.status == "1" && res.active == "1")
                     {
-                        this.success = true;
                         this.temp_dir = res.temp;
                         this.hidden_dir = res.hidden;
                         this.server_dir = res.server;
                         this.max_size_total = res.maxSizeTotal;
                         this.max_file_count = res.maxFileCount;
                         this.max_page_count = res.pgLeft;
+                        this.is_active = true;
 
                     }
-                    //else if (res.status == "1" && res.active == "0")
-                    //{  //id deactivated
-                    //    success = false;
-                    //}
-                    else
-                    {
-                        success = false;
+                    else if (res.status == "1" && res.active == "0")
+                    {  //id deactivated
+                        this.is_active = false;
                     }
+                    this.success = true;
                 }
                 catch (Exception ex)
                 {
+                    this.success = false;
                     throw new Exception("API respons not appropriate.");
+                    
                 }
 
             }
             else
             {
-                success = false;
+                this.success = false;
             }
         }
 
@@ -237,8 +241,9 @@ namespace Printer_Client
         //     returns true if fetching was successfull and ID is active, Must check before Creating User class
         public bool hasSuccessfullFetch()
         {
-            return success;
+            return this.success;
         }
+
 
         public IRestResponse getCredentialRespons()
         {

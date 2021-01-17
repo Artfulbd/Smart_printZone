@@ -16,11 +16,10 @@ namespace Printer_Client
         public string id { get; private set; }
         public string name { get; private set; }
         
-        public  int printed_page_count { get; private set; }
-        public  int page_left { get; private set; }
+        public int printed_page_count { get; private set; }
+        public int page_left { get; private set; }
         private HashSet<FileType> file_list;        // doesn't take duplicate items
         private Tools _tool;
-        private bool isActivated = false;
         private double nowTotalSize;
         private int nowTotalPage;
 
@@ -30,7 +29,6 @@ namespace Printer_Client
             _tool = tool;
             id = tool.getId();
         }
-        public bool isActive() { return isActivated; }
 
         public int nowHasTotalPage()
         {
@@ -53,15 +51,15 @@ namespace Printer_Client
 
         public bool removeFromFileList(FileType file)
         {
+            nowTotalPage -= file.page_count;
             return file_list.Remove(file);
         }
         
 
         public void getCredentials()
         {
-            if(_tool.hasSuccessfullFetch())
+            if(_tool.hasSuccessfullFetch() && _tool.isActive())
             {
-                isActivated = true;
                 dynamic res = Newtonsoft.Json.Linq.JObject.Parse(_tool.getCredentialRespons().Content.ToString());
                 name = res.name;
                 printed_page_count = res.pgPrinted;
@@ -74,14 +72,6 @@ namespace Printer_Client
                     PendingFileInsertionEvent?.Invoke(this, file);
                 }
             }
-        }
-         
-
-        public void refreshEverything()
-        {
-            
-        }
-        
-        
+        }        
     }
 }

@@ -46,14 +46,14 @@ namespace Printer_Client
             get { return _self; }
             set { _self = value;}
         }
-
+        /*
         public void makeFlaxible()
         {
             this.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
         }
-
+        */
         [Category("Custom Props")]
         public int index
         {
@@ -71,7 +71,7 @@ namespace Printer_Client
         {
             this.FileRemoverEnent?.Invoke(this, this._self);
         }
-        /*
+        
         [Category("Custom Props")]
         public string file_name
         {
@@ -98,7 +98,7 @@ namespace Printer_Client
         {
             get { return _time; }
             set { _time = value; lblTime.Text = value; }
-        }*/
+        }
 
 
     }
