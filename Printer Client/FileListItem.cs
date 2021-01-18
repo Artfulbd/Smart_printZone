@@ -12,26 +12,48 @@ namespace Printer_Client
 {
     public partial class FileListItem : UserControl
     {
+        public event EventHandler<FileListItem> FileRemoverEnent;
         private string _file_name;
         private double _size;
         private string _pg_count;
         private string _time;
         private int _index;
+        private FileListItem _self;
+        private FileType _file;
 
-        public FileListItem()
+        public FileListItem(FileType file)
         {
             InitializeComponent();
-
+            _file = file;
+            populateSelf();
         }
 
+        private void populateSelf()
+        {
+            lblFileName.Text = _file_name = _file.file_name;
+            lblSize.Text = (_size = _file.size).ToString() + "KB";
+            lblPageCount.Text = _pg_count = _file.page_count.ToString();
+            lblTime.Text = _time = _file.creation_time;
+        }
 
+        public FileType giveFile()
+        {
+            return _file;
+        }
+
+        public FileListItem fileListItem
+        {
+            get { return _self; }
+            set { _self = value;}
+        }
+        /*
         public void makeFlaxible()
         {
             this.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
         }
-
+        */
         [Category("Custom Props")]
         public int index
         {
@@ -45,6 +67,11 @@ namespace Printer_Client
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.FileRemoverEnent?.Invoke(this, this._self);
+        }
+        
         [Category("Custom Props")]
         public string file_name
         {
@@ -72,6 +99,7 @@ namespace Printer_Client
             get { return _time; }
             set { _time = value; lblTime.Text = value; }
         }
+
 
     }
 }

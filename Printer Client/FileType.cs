@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Printer_Client
 {
-    class FileType
+    public class FileType
     {
         public string file_name { get; }
         public double size { get; } //in mega byte

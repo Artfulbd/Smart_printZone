@@ -24,6 +24,15 @@ namespace Printer_Client
             this.lblTitel.Text = name;
         }
 
+        public void disable()
+        {
+            this.lblFileName.Visible = false;
+            this.lblPageCount.Visible = false;
+            this.lblSize.Visible = false;
+            this.label2.Visible = false;
+            this.label3.Visible = false;
+        }
+
 
         [Category("Custom Props")]
         public string msg
@@ -43,7 +52,7 @@ namespace Printer_Client
         public string size
         {
             get { return _size; }
-            set { _size = value; lblSize.Text = value; }
+            set { _size = value; lblSize.Text = value + "KB"; }
         }
 
         [Category("Custom Props")]
@@ -52,5 +61,6 @@ namespace Printer_Client
             get { return _pg_count; }
             set { _pg_count = value; lblPageCount.Text = value; }
         }
+
     }
 }

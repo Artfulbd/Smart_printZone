@@ -9,20 +9,21 @@ namespace Printer_Client
 {
     class Communicator
     {
-        private string login_ur = "http://localhost/pZone/commingin.php";  // initial data popukation
-        private string req_ur = "http://localhost/pZone/takeFiles.php";    // file sent to server request
-        private string rem_ur = "http://localhost/pZone/removefile.php";    // file remove request
+        private string login_url = "http://localhost/pZone/commingin.php";  // initial data popukation
+        private string take_file_url = "http://localhost/pZone/takeFiles.php";    // file sent to server request
+        private string rem_file_url = "http://localhost/pZone/removefile.php";    // file remove request
+        private string id, machineName;
         private IRestResponse res;
 
-        //public Communicator() {
+        public Communicator(string id, string machineName) {
+            this.id = id;
+            this.machineName = machineName;
+        }
 
-
-        //}
-
-        public void initialRequest(string machineName, string id, string key)
+        public void initialRequest(string key)
         {
-            string payLoad = "{\"id\":\"" + id + "\",\"machine\":\"" + machineName + "\",\"key\":\"" + key + "\"}";
-            this.res = makeReq(this.login_ur, payLoad);
+            string payLoad = "{\"id\":\"" + this.id + "\",\"machine\":\"" + this.machineName + "\",\"key\":\"" + key + "\"}";
+            this.res = makeReq(this.login_url, payLoad);
         }
         public IRestResponse getInitialRespons()
         {
@@ -31,8 +32,20 @@ namespace Printer_Client
         public void checkAgain(){ 
             //initialRequest(); 
         }
+        
+        public IRestResponse makeTakeFileRequest(string key, FileType file)
+        {
+            string payLoad = "{\"id\":\"" + this.id + "\",\"pc_name\":\"" + this.machineName + "\",\"key\":\"" + key + "\",\"file_count\":\"1\",\"files\":[{\"file_name\": \"" +file.file_name + "\",\"time\":\"" + file.creation_time + "\",\"pg_count\":\"" + file.page_count + "\",\"size\":\"" + file.size + "\"}]}";
+            return makeReq(this.take_file_url, payLoad);
+        }
 
-        // makes request and store initial respons 
+        public IRestResponse makeRemoveFileRequest(string key, FileType file)
+        {
+            string payLoad = "{\"id\":\"" + this.id + "\",\"pc_name\":\"" + this.machineName + "\",\"key\":\"" + key + "\",\"file_name\": \"" + file.file_name + "\",\"time\":\"" + file.creation_time + "\",\"pg_count\":\"" + file.page_count + "\",\"size\":\"" + file.size + "\"}";
+            return makeReq(this.rem_file_url, payLoad);
+        }
+
+        // makes request 
         private IRestResponse makeReq(string url, string payLoad)
         {
             var client = new RestClient(url);
@@ -43,17 +56,9 @@ namespace Printer_Client
             return client.Execute(request);
         }
 
-        // gets initial respons to populate User's data
-        public IRestResponse getRespons()
-        {         
-            return this.res;
-        }
+        
 
-        public bool removeFile(string file_name)
-        {
-            //use del_url here
-            return true;
-        }
+        
 
         
     }
