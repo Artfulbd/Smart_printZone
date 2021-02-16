@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,700');
+
+
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+body {
+  background-color: #E4E6E9;
+  padding-bottom: 0;
+  font-family: 'Poppins',sans-serif;
+  font-size: 16px;
+  color: #000;
+  line-height: 1.5;
+  overflow-x: hidden;
+  font-variant-numeric: lining-nums;
+  -moz-font-feature-settings: "lnum" 1;
+  -moz-font-feature-settings: "lnum=1";
+  -ms-font-feature-settings: "lnum" 1;
+  -o-font-feature-settings: "lnum" 1;
+  -webkit-font-feature-settings: "lnum" 1;
+  font-feature-settings: "lnum" 1;
+}
+h3 {
+  font-size: 28px;
+  line-height: 32px;
+  margin: 0px 0px 10px 0px;
+  font-family: 'Poppins',sans-serif;
+  font-weight: 300;
+  color:#FFD41F;
+}
+h4{
+  margin-bottom:10px;
+}
+.navbar {
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border-width: 0;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  min-height: 45px;
+  background: #06265F;
+}
+.navbar.faculty-header, .titlebar {
+  background: #009FFF;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #ec2F4B, #009FFF);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #ec2F4B, #009FFF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  color: #fff;
+  box-shadow: 0px 2px 2px grey;
+  z-index: 9;
+}
+.page-content {
+  background-color: #FFF;
+  position: relative;
+  margin: 0;
+  padding: 8px 20px 0px 24px;
+}
+.login-form {
+  background: #24C6DC;
+  background: -webkit-linear-gradient(to right, #514A9D, #24C6DC);
+  background: linear-gradient(to right, #514A9D, #24C6DC);
+  padding: 15px;
+  color: #fff;
+  box-shadow: 0px 2px 5px #000;
+}
+.navbar .navbar-brand {
+  color: #FFF;
+  font-size: 24px;
+  text-shadow: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  height: auto;
+}
+
+#main-container {
+  padding-top: 3px;
+}
+.main-container.container, .rtl .main-container.container {
+  padding-left: 0;
+  padding-right: 0;
+}
+.footer {
+  padding-top: 75px;
+  height: 100%;
+  width: 100%;
+}
+.footer .footer-inner {
+  text-align: center;
+  z-index: auto;
+}
+.footer .footer-inner .footer-content {
+  padding: 8px;
+  line-height: 36px;
+  border-top: 3px double #E5E5E5;
+}
+.blue {
+  color: #478FCA !important;
+}
+.pull-right {
+  float: right !important;
+}
+.btn-success {
+  color: #fff;
+  background-color: #398439;
+  border-color: #398439;
+}
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  white-space: nowrap;
+  padding: 10px 20px;
+  font-size: 16px;
+  line-height: 1.42857143;
+  border-radius: 0px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-bottom:10px;
+}
+.form-group .fa {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  color: #999;
+}
+a{color:#fff;font-weight:bold;}
+.time {
+  text-align: left;
+  font-size: 14px;
+  color: #fff;
+}
+input.form-control{
+  border-radius: 0px;
+  padding: 20px;
+  color: #000;
+  font-size:15px;
+}
+.user {
+  color:#FFD41F;
+  font-size:22px;
+}
+p.headings{
+  color: #FFD41F;
+  font-weight: bold;
+  font-size: 17px;
+}
+.hints{
+  border: 0px solid #444;
+  padding: 10px;
+  margin-bottom: 20px;
+  background: #D03C60;
+}
+.hints ul {
+  margin-top: 10px
+}
+
+.hints ul li {
+  font-weight: 500;
+  font-size: 14px;
+  color: #FFD41F;
+}
+#phonemask {
+  display: none
+}
+#success_message{
+  background: #449D44;
+  padding: 10px;
+}
+#error_msg{
+  background: #EA304C;
+  padding: 10px;
+}

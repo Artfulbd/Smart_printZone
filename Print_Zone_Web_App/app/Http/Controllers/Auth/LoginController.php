@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use http\Client\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -26,8 +29,34 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    //protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo;
+    public function redirectTo()
+    {
+        if (!Auth::check()) {
+            $this->redirectTo = '/login';
+            return $this->redirectTo;
+        }
 
+        if (strtolower(auth()->user()->role) == 'super_admin') {
+
+            $this->redirectTo = '/admin_landing';
+            return $this->redirectTo;
+        }
+
+
+
+
+        if (strtolower(auth()->user()->role) == 'student') {
+
+            $this->redirectTo = '/student_landing';
+            return $this->redirectTo;
+        }
+
+
+        $this->redirectTo = '/';
+        return $this->redirectTo;
+    }
     /**
      * Create a new controller instance.
      *
@@ -37,4 +66,7 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+
+
 }

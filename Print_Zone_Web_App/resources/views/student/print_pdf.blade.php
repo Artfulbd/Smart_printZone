@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.student_layout')
 @section('content')
     <div class="container-fluid px-lg-4">
         <div class="row">
