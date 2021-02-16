@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 26, 2020 at 08:34 PM
+-- Generation Time: Feb 16, 2021 at 05:48 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -89,7 +89,7 @@ INSERT INTO `_cread96a4f3p` (`setting_id`, `max_file_count`, `max_size_total`, `
 --
 
 CREATE TABLE `_pending5cq71rd` (
-  `id` varchar(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `file_name` varchar(255) NOT NULL,
   `time` datetime NOT NULL,
   `pg_count` int(11) NOT NULL,
@@ -103,7 +103,8 @@ CREATE TABLE `_pending5cq71rd` (
 --
 
 INSERT INTO `_pending5cq71rd` (`id`, `file_name`, `time`, `pg_count`, `size`, `is_online`, `source`) VALUES
-('1722231042', 'Schedule_Fall2020', '2020-12-26 01:35:53', 1, 1, 1, 'w');
+(1721277, 'Lecture', '2021-02-16 22:47:23', 80, 731, 0, 'DESKTOP-5RNDV53'),
+(1721277, 'Schedule_Spring2021', '2021-02-16 22:47:26', 1, 200, 0, 'DESKTOP-5RNDV53');
 
 -- --------------------------------------------------------
 
@@ -112,10 +113,10 @@ INSERT INTO `_pending5cq71rd` (`id`, `file_name`, `time`, `pg_count`, `size`, `i
 --
 
 CREATE TABLE `_user711qd9m` (
-  `id` varchar(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
-  `page_left` int(11) NOT NULL DEFAULT 200,
+  `page_left` mediumint(9) NOT NULL DEFAULT 200,
   `total_printed` int(11) NOT NULL DEFAULT 0,
   `pending` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -125,11 +126,11 @@ CREATE TABLE `_user711qd9m` (
 --
 
 INSERT INTO `_user711qd9m` (`id`, `name`, `status`, `page_left`, `total_printed`, `pending`) VALUES
-('1721277042', 'Fahad Rahman Amik', 1, 200, 0, 0),
-('1721616042', 'Junaer Adib', 1, 200, 0, 0),
-('1722231042', 'Md. Ariful Haque', 1, 200, 0, 1),
-('1822231042', 'Akhandanand Tripathi', 1, 200, 0, 0),
-('1922231042', 'Rajpal Yadhap', 0, 200, 0, 0);
+(1721277, 'Fahad Rahman Amik', 1, 200, 0, 2),
+(1721616, 'Junaer Adib', 1, 200, 0, 0),
+(1722231, 'Md. Ariful Haque', 1, 200, 0, 0),
+(1822231, 'Akhandanand Tripathi', 1, 200, 0, 0),
+(1922231, 'Rajpal Yadhap', 0, 200, 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -184,7 +185,7 @@ ALTER TABLE `_cread96a4f3p`
 -- Constraints for table `_pending5cq71rd`
 --
 ALTER TABLE `_pending5cq71rd`
-  ADD CONSTRAINT `_pending5cq71rd_fk0` FOREIGN KEY (`id`) REFERENCES `_user711qd9m` (`id`);
+  ADD CONSTRAINT `_pending5cq71rd_fk0` FOREIGN KEY (`id`) REFERENCES `_user711qd9m` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

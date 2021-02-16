@@ -9,7 +9,7 @@ namespace Printer_Client
 {
     class Communicator
     {
-        private string login_url = "http://localhost/pZone/commingin.php";  // initial data popukation
+        private string login_url = "http://localhost/pZone/commingin.php";        // initial data popukation
         private string take_file_url = "http://localhost/pZone/takeFiles.php";    // file sent to server request
         private string rem_file_url = "http://localhost/pZone/removefile.php";    // file remove request
         private string id, machineName;

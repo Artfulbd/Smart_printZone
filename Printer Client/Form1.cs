@@ -106,16 +106,6 @@ namespace Printer_Client
 
         private void refresh()
         {
-            /*
-            this.fw.FileListeningEvent -= Fw_FileListeningEvent;
-            this.fw.FileInsertionEvent -= Fw_FileInsertionEvent;
-            this.fw.DuplicateFileInsertionEvent -= Fw_DuplicateFileInsertionEvent;
-            this.tool.PageLimitExceedsEvent -= Tool_PageLimitExceedsEvent;
-            this.tool.TotalFileSizeExceedsEvent -= Tool_TotalFileSizeExceedsEvent;
-            this.tool.TotalFileCountExceedsEvent -= Tool_TotalFileCountExceedsEvent;
-            this.tool.IdDeactivatedEvent -= Tool_IdDeactivatedEvent;
-            this.usr.PendingFileInsertionEvent -= Usr_PendingFileInsertionEvent;*/
-            // cleaning list
             if (this.flowLayoutPanel.Controls.Count != 0)
             {
                 this.flowLayoutPanel.Controls.Clear();
@@ -144,12 +134,14 @@ namespace Printer_Client
             this.lblPageLeft.Text = usr.page_left.ToString();
             this.lblOnQueue.Text = usr.nowHasTotalPage().ToString();
             this.lblTotalPrinted.Text = usr.printed_page_count.ToString();
+            this.lblAfterPrinting.Text = (usr.page_left - usr.nowHasTotalPage()).ToString();
         }
         private void initializeEstimation()
         {
             this.lblPageLeft.Text = "";
             this.lblOnQueue.Text = "";
             this.lblTotalPrinted.Text = "";
+            this.lblAfterPrinting.Text = "";
         }
 
         private void Fw_FileListeningEvent(object sender, string e)
