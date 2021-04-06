@@ -1,0 +1,52 @@
+# API call 1
+	- php server will take it as a punch.
+	- check if user is active and has files to be printd
+	  SELECT status, pending FROM `_user711qd9m` WHERE id = 1722231
+
+	- if active, than get total page count for printing.
+	  SELECT sum(pg_count) as "total_page_count" FROM `_pending5cq71rd` WHERE id = 172127;
+
+	- if doesn't has files or id deactivated, ##reply to abort printing##.
+
+	##start transaction
+	- if has files and active, than checks for least busy printer from "printer_status"
+	  SELECT * FROM `printe3242342r_status234232077` left join print43er_details234c23452 
+	  on printe3242342r_status234232077.printer_id = print43er_details234c23452.printer_id 
+	  WHERE print43er_details234c23452.current_status = 1 
+	  ORDER BY `printe3242342r_status234232077`.`required_time` ASC;
+	- will get p_id, u_id, required_time, time_one_pg, printer_name, port, driver_name
+	- get current queue size
+	  SELECT count(*) as "queue_size" FROM `prin23422ting_queue21314`;	
+	- now calculate own printing time 
+		-- own_printing_time = [(total_page_count * time_one_pg) + padding]
+	-- than make entry to that user to printing_queue
+		   INSERT INTO `prin23422ting_queue21314`(`num`, `u_id`, `p_id`, `status`, `time`) 
+		   VALUES (queue_size+1, 1722, 2, 1, own_printing_time);
+
+	- if required_time is zero means printer is idol
+		-- than make entry to that user to "printer_status"
+		   UPDATE `printe3242342r_status234232077` SET `u_id`= 321 ,`required_time` = own_printing_time 
+		   WHERE printer_id = 1
+		-- wait_time = padding
+
+	- if required time is NOT zero, means printer is printing, requires some time to be free
+		-- than update time for that printer in "printer_status"
+		   UPDATE `printe3242342r_status234232077` SET `required_time`= `required_time`+ own_printing_time 
+		   WHERE printer_id = 1
+		-- wait_time = required_time + padding
+	##stop transaction
+		   
+	- reply printer details with wait_time
+#end of API call 1
+
+
+
+
+
+
+
+
+
+
+-- get current required time of freeing, for that p_id (from print_queue)
+		   SELECT sum(time) as "time" FROM `prin23422ting_queue21314` WHERE p_id = 1;

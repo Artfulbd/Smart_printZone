@@ -450,12 +450,14 @@ namespace Printer_Client
             if (this.tool.isActive() && this.tool.hasSuccessfullFetch())
             {
                 this.flowLayoutPanel.BackColor = Color.LightBlue;
+                this.lblDrop.ForeColor = System.Drawing.Color.Red;
             }
         }
 
         private void flowLayoutPanel_MouseLeave(object sender, EventArgs e)
         {
             this.flowLayoutPanel.BackColor = Color.AliceBlue;
+            this.lblDrop.ForeColor = System.Drawing.Color.Black;
         }
 
     }

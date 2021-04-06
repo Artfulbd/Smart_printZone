@@ -1,0 +1,20 @@
+1.  Turn printing system ON.
+2.  Turn printing system OFF.
+3.  Add list of new users.
+4.  Remove list of new users.
+5.  Deactivate an account.
+6.  Activate an account.
+7.  View history.
+	|->Single user.
+	|->by date.
+	|->by batch.
+8.  Create an admin.
+9.  Remove an admin.
+10. Disable an admin.
+11. Active an admin.
+12. View admin min history.
+	|->by name.
+	|->by action.
+13. Add page to user.
+14. Set default page count.
+15. Erase all previous data.(set everything default)

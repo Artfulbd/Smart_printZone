@@ -31,8 +31,8 @@ namespace Printer_Client
         public Tools()
         {
             //id = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            //id = "1722231"; // for now
-            id = "1721277";
+            id = "1722231"; // for now
+            //id = "1721277";
             machine_name = Environment.MachineName;
             com = new Communicator(id, machine_name);
             fli = new List<FileListItem>();
