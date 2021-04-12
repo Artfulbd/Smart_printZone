@@ -2,22 +2,22 @@ user punches card
 get id 
 get time
 send on thread
-	do
-	  request for printer			[API call {1}] (may take time)
-	  (it will get printer details with wait time)
-	  if false punch || print abort command
-		break
-	  sleep for wait_time
-	while wait_time > zero
-
-	prepare printer
-	notifying about print job starting      [API call {2}]
-	while all_doc_not_printed
+	request for printer			[API call {1}] (also sends timestamp catching time)
+						(it will get printer details with wait time)
+	if true punch && not print abort command
+	 if wait_time_not_zero
+	 	do
+	 	 sleep for wait_time
+	 	 update wait time	[API call {2}] (remaining wait time)
+	 	while wait_time > zero
+	 prepare printer
+	 notifying about print job starting      [API call {3}] (make etry on printer_status)
+	 while all_doc_not_printed
 	   printing document
 	   if has printer problem
-		notify server 			[API call {3}]
-	   after printing one doc, notify server, with remaining doc count. [API call {4}]
+		notify server 			[API call {4}]
+	   after printing one doc, notify server, with new remaining time and document count. [API call {5}] (update time on status)
 								    
-	get killed
+	 get killed
 
 thread returns	

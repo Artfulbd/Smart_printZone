@@ -20,33 +20,50 @@
 	- now calculate own printing time 
 		-- own_printing_time = [(total_page_count * time_one_pg) + padding]
 	-- than make entry to that user to printing_queue
-		   INSERT INTO `prin23422ting_queue21314`(`num`, `u_id`, `p_id`, `status`, `time`) 
-		   VALUES (queue_size+1, 1722, 2, 1, own_printing_time);
-
-	- if required_time is zero means printer is idol
-		-- than make entry to that user to "printer_status"
-		   UPDATE `printe3242342r_status234232077` SET `u_id`= 321 ,`required_time` = own_printing_time 
-		   WHERE printer_id = 1
-		-- wait_time = padding
-
-	- if required time is NOT zero, means printer is printing, requires some time to be free
-		-- than update time for that printer in "printer_status"
-		   UPDATE `printe3242342r_status234232077` SET `required_time`= `required_time`+ own_printing_time 
-		   WHERE printer_id = 1
-		-- wait_time = required_time + padding
+		   INSERT INTO `prin23422ting_queue21314`(`num`, `u_id`, `p_id`, `time`, `wait_time`) 
+		   VALUES (queue_size+1, 1722, 2, own_printing_time, required_time);
+	-- update required time on "printer_status"
+		   UPDATE `printe3242342r_status234232077` SET 
+		   `required_time`= `required_time` +  own_printing_time WHERE printer_id = 1
 	##stop transaction
 		   
-	- reply printer details with wait_time
+	- reply printer details with wait_time = required_time
 #end of API call 1
 
 
+#API call 2  (remaining wait time)
+-- get current required time of freeing, for that p_id 
+		   SELECT wait_time FROM `prin23422ting_queue21314` WHERE u_id = 1724;
+#end of API call 2
+
+
+
+#API call 3  (make etry on printer_status)
+	- get print order details of that user
+	  SELECT * FROM `prin23422ting_queue21314` WHERE u_id = 17222
+	- will return num, p_id, status, time
+	- if has_entry
+		##Start transaction
+		-- get current required time of freeing and make entry to that user to "printer_status"
+		   UPDATE `printe3242342r_status234232077` SET `u_id`= 17222 WHERE printer_id = 1
+		-- remove from "printer_queue", as printing is going to start
+		   DELETE FROM `prin23422ting_queue21314` WHERE u_id = 1722
+		-- update priority(num) "print_queue"
+		   UPDATE `prin23422ting_queue21314` SET `num`= `num` - 1 WHERE 1
+		##end tranction
+#end of API call 3
+
+
+#API call 5  (remaining wait time) {new_time = currently_printed_page_count * time_one_page; [from C#]}
+	- update wait time on "printer_status"
+		-- if document_remaining = 0
+		    --- sleep for padding time
+		    --- new_time = new_time - padding_time
+	    UPDATE `printe3242342r_status234232077` SET `required_time`= `required_time` - new_time WHERE `printer_id`= 3 and `u_id`= 17222
+	- update wait time for all on "print_queue"
+	    UPDATE `prin23422ting_queue21314` SET `wait_time`= `wait_time` - new_time WHERE 1
+#end of API call 5
 
 
 
 
-
-
-
-
--- get current required time of freeing, for that p_id (from print_queue)
-		   SELECT sum(time) as "time" FROM `prin23422ting_queue21314` WHERE p_id = 1;
