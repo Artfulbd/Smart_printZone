@@ -4,6 +4,8 @@
         private $comming_in_list = array('id','key','machine');
         private $take_file_list = array('id','key','pc_name','file_count','files');
         private $remove_file_list = array('id','key','pc_name','file_name','time', 'pg_count','size');
+        private $any_update_list = array('ip','key','machine');
+        private $punch_list = array('id','punch_time','zone_code','key','ip');
         private $server_dir = "\\\DESKTOP-5RNDV53\ServerFolder";
 
         function _validate($data, $list){
@@ -34,28 +36,37 @@
         function get_comming_list(){
             return $this->comming_in_list;
         }
+        function get_any_update_list(){
+            return $this->any_update_list;
+        }
         function take_file_list(){
             return $this->take_file_list;
         }
         function remove_file_list(){
             return $this->remove_file_list;
         }
+        function get_punch_list(){
+            return $this->punch_list;
+        }
 
         function test_input($data) {  // return true if VALID
+            //$data = trim($data);
             $operators = array(
-                'select * ',
-                'select ',
-                'union all ',
-                'union ',
-                ' all ',
-                ' where ',
-                ' and 1 ',
-                ' and ',
-                ' or ',
-                ' 1=1 ',
-                ' 2=2 ',
-                ' -- ',
-                '--'
+                'select *',
+                'select',
+                'union all',
+                'union',
+                'all',
+                'where',
+                'and 1',
+                'and',
+                'or',
+                '1=1',
+                '2=2',
+                '--',
+                '--',
+                '_',
+                '- --'
             );
            
             if(is_array($data) || is_object($data))
@@ -72,7 +83,7 @@
             {
                 foreach($operators as $operator)
                 {
-                    if (preg_match("/".$operator."/i", urldecode(strtolower($data)))) {
+                    if (preg_match("/".$operator."/i", urldecode(strtolower(trim($data))))) {
                         return false;
                     }
                 }

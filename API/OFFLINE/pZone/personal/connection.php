@@ -2,8 +2,8 @@
 
     class ConnectTo{
         private $host = 'localhost';
-        private $user = 'root';
-        private $pass = '';
+        private $user = 'Ariful';
+        private $pass = 'a1234';
         private $pZonedb = '_smartprintzone97830a1';
         private $link;
         function __construct($dbFor) {
