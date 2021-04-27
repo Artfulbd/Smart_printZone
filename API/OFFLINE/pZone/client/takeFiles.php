@@ -24,7 +24,7 @@
         echo "You fool, Get Lost";
     }
     else{ // do everything here 
-        $qry = "SELECT `status`, `page_left`, `pending` FROM `_user711qd9m` WHERE id = $data->id";
+        $qry = "SELECT `status`, `page_left`, `pending` FROM `_user711qd9m` WHERE id = $data->id and currently_printing = 0";
         $res = mysqli_fetch_all(mysqli_query($link, $qry), MYSQLI_ASSOC);  
 
         $response = null;

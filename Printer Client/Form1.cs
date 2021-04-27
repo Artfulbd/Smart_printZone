@@ -46,7 +46,7 @@ namespace Printer_Client
                 this.usr.PendingFileInsertionEvent += Usr_PendingFileInsertionEvent;
                 this.usr.getCredentials();
 
-                if(this.tool.isActive())
+                if(this.tool.isActive() && !this.tool.isCurrentlyPrinting())
                 {
                     this.fw = new FileWatcher(this.usr, this.tool);
                     this.fw.FileListeningEvent += Fw_FileListeningEvent;
@@ -86,14 +86,21 @@ namespace Printer_Client
         private void populateGUI()
         {
             this.Text = "Printer Client :" + usr.id;
+            this.lblName.Text = usr.name;
+            this.lblWarning.Text = "";
             this.btnRefresh.Enabled = true;
             if (this.tool.isActive())
             {
                 //id enebled
-                this.lblName.Text = usr.name;
-                this.lblWarning.Text = "";
-                loadEstimation();
-
+                if (this.tool.isCurrentlyPrinting())
+                {
+                    this.lblWarning.Text = "Printing started, cannot add or remove..!";
+                    this.flowLayoutPanel.AllowDrop = false;
+                }
+                else
+                {
+                    loadEstimation();
+                }                
             }
             else
             {
@@ -124,6 +131,7 @@ namespace Printer_Client
             this.btnRefresh.Enabled = true;
             
         }
+
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             refresh();
@@ -325,7 +333,7 @@ namespace Printer_Client
             else
             {
                 FileListItem fl = new FileListItem(file);                
-                fl.FileRemoverEnent += Fl_FileRemoverEnent;
+                fl.FileRemoverEvent += Fl_FileRemoverEvent;
                 fl.index = flowLayoutPanel.Controls.Count;
                 fl.fileListItem = fl;
                 this.tool.fli.Add(fl);
@@ -335,7 +343,7 @@ namespace Printer_Client
             }
         }
 
-        private void Fl_FileRemoverEnent(object sender, FileListItem fl)
+        private void Fl_FileRemoverEvent(object sender, FileListItem fl)
         {
             if(this.tool.removeFile(this, fl.giveFile()))
             {
@@ -447,7 +455,7 @@ namespace Printer_Client
         private void flowLayoutPanel_MouseEnter(object sender, EventArgs e)
         {
             
-            if (this.tool.isActive() && this.tool.hasSuccessfullFetch())
+            if (this.tool.isActive() && this.tool.hasSuccessfullFetch() && !this.tool.isCurrentlyPrinting())
             {
                 this.flowLayoutPanel.BackColor = Color.LightBlue;
                 this.lblDrop.ForeColor = System.Drawing.Color.Red;

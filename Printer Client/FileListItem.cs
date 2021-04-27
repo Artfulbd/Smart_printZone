@@ -12,7 +12,7 @@ namespace Printer_Client
 {
     public partial class FileListItem : UserControl
     {
-        public event EventHandler<FileListItem> FileRemoverEnent;
+        public event EventHandler<FileListItem> FileRemoverEvent;
         private string _file_name;
         private double _size;
         private string _pg_count;
@@ -69,7 +69,7 @@ namespace Printer_Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.FileRemoverEnent?.Invoke(this, this._self);
+            this.FileRemoverEvent?.Invoke(this, this._self);
         }
         
         [Category("Custom Props")]

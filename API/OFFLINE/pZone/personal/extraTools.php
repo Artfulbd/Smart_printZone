@@ -3,9 +3,11 @@
         private $fileReqUrl = "http://something.php";
         private $comming_in_list = array('id','key','machine');
         private $take_file_list = array('id','key','pc_name','file_count','files');
-        private $remove_file_list = array('id','key','pc_name','file_name','time', 'pg_count','size');
-        private $any_update_list = array('ip','key','machine');
+        private $remove_file_list = array('id','key','pc_name','file_name', 'pg_count','size');
+        private $any_update_list = array('ip','key','machine','zone_code');
         private $punch_list = array('id','punch_time','zone_code','key','ip');
+        private $wait_time_list = array('id','key','ip');
+        private $print_success_list = array('id', 'finish_flag', 'file_name', 'pg_count', 'delete_time', 'key', 'ip');
         private $server_dir = "\\\DESKTOP-5RNDV53\ServerFolder";
 
         function _validate($data, $list){
@@ -14,6 +16,7 @@
             }
             $size = count($list); $i = 0;
             // checking for property presence and injection
+            
             while($i < $size && property_exists($data, $list[$i]) && $this->test_input($data->{$list[$i++]}));
             return ($size == $i && $this->checkKey($data));
         }
@@ -48,25 +51,34 @@
         function get_punch_list(){
             return $this->punch_list;
         }
+        function get_wait_time_list(){
+            return $this->wait_time_list;
+        }
+        function get_print_starting_list(){
+            return $this->wait_time_list;
+        }
+        function get_update_status_list(){
+            return $this->wait_time_list;
+        }
+        function get_print_success_list(){
+            return $this->print_success_list;
+        }
 
         function test_input($data) {  // return true if VALID
             //$data = trim($data);
             $operators = array(
-                'select *',
-                'select',
-                'union all',
-                'union',
-                'all',
-                'where',
-                'and 1',
-                'and',
-                'or',
-                '1=1',
-                '2=2',
-                '--',
-                '--',
-                '_',
-                '- --'
+                ' select * ',
+                ' select ',
+                ' union all ',
+                ' union ',
+                ' all ',
+                ' where ',
+                ' and 1 ',
+                ' and ',
+                ' 1=1 ',
+                ' 2=2',
+                ' --',
+                ' - -- '
             );
            
             if(is_array($data) || is_object($data))
@@ -75,6 +87,7 @@
                 foreach($data as $value)
                 {
                     $isInjection =  $this->test_input($value) ? false : true;
+                    
                     if($isInjection) return false;
                 }
                 return true;
@@ -83,7 +96,8 @@
             {
                 foreach($operators as $operator)
                 {
-                    if (preg_match("/".$operator."/i", urldecode(strtolower(trim($data))))) {
+                    if (preg_match("/".$operator."/i", urldecode(strtolower($data)))) {
+                        //printf("operator:%s: || data:%s:\n",$operator, $data);
                         return false;
                     }
                 }

@@ -21,10 +21,11 @@
     }
     else if(!$kit->_validate($data, $kit->remove_file_list())){
         $conObg->detach();
-        echo "You fool, Get Lost.!";
+        //print_r($data);
+        echo "You fool, Get Lost..!";
     }
     else{ // do everything here 
-        $qry = "SELECT `status`, `page_left`, `pending` FROM `_user711qd9m` WHERE id = $data->id";
+        $qry = "SELECT `status`,`page_left`, `pending` FROM `_user711qd9m` WHERE id = $data->id and currently_printing = 0;";
         $res = mysqli_fetch_all(mysqli_query($link, $qry), MYSQLI_ASSOC);  
 
         $response = null;
@@ -95,7 +96,6 @@
                 "status" => "0",
                 "active" => "0",
                 "deleted" => "0",
-                "msg" => "Deactive ID"
             ); 
         }   
         http_response_code(200);

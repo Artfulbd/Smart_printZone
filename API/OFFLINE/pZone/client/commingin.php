@@ -22,9 +22,8 @@
     }
     else{ // do everything here   
         //get user info
-        $qry = "SELECT * FROM `_user711qd9m` WHERE id = '$data->id'";
+        $qry = "SELECT * FROM `_user711qd9m` WHERE id = $data->id";
         $res = mysqli_fetch_all(mysqli_query($link, $qry), MYSQLI_ASSOC);
-
         // get credentials for app
         $qry2 = "SELECT * FROM `_cread96a4f3p` WHERE setting_id = 1";
         $res2 = mysqli_fetch_all(mysqli_query($link, $qry2), MYSQLI_ASSOC);     
@@ -60,6 +59,7 @@
                         "status" => "1",  // protocol
                         "name" => $res['name'],
                         "active" => $res['status'], //as flag if account is active
+                        "currently_printing" => $res['currently_printing'],
                         "pgLeft" => $res['page_left'],
                         "pgPrinted" => $res['total_printed'],
                         "maxSizeTotal" => $res2['max_size_total'],

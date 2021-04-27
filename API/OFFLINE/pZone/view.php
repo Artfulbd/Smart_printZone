@@ -27,8 +27,10 @@
 </head>
 <body>
 <div class="container">
-    <div class="row my-5">
+    <div class="row my-2">
         <div class="col-12 center-block text-center">
+        
+            <u><h2 id="zone_name_class">Zone Name</h2></u>
             <h1 class="text-secondary mb-3 ">Current Status</h1>
         </div>
         <table class="table table-striped table-bordered">
@@ -48,7 +50,7 @@
 
 
 
-    <div class="row my-5">
+    <div class="row my-2">
         <div class="col-12 center-block text-center">
             <h1 class="text-secondary mb-3 ">Card Punched</h1>
         </div>
@@ -69,7 +71,6 @@
         </table>
     </div>
 </div>
-
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -89,6 +90,7 @@
       myHeaders.append("Content-Type", "application/json");
 
       var raw = JSON.stringify({
+      "zone_code": "1",
       "ip": "172.168.0.23",
       "key": "nai",
       "machine": "jani na"
@@ -100,7 +102,7 @@
       body: raw,
       redirect: 'follow'
       };
-
+      
       setInterval(function(){
       fetch("http://localhost/pZone/server/any_update.php", requestOptions)
       .then(function(response){
@@ -110,13 +112,14 @@
         fillUp(response);
       })
       .catch(error => console.log('error', error));
-
-
-
       }, 3000);
 
       function fillUp(response){
       console.log(response);
+
+      document.getElementById('zone_name_class').innerHTML = response.zone_name;
+      //document.getElementById('zone_name_class').innerHTML = "other text";
+
       $("#current_status").empty();
       $.each(response.status_data, function (key, value) {
           var color = null

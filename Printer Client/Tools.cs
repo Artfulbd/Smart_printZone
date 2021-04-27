@@ -26,13 +26,14 @@ namespace Printer_Client
         private Communicator com;
         private bool success;
         private bool is_active;
+        private bool is_currently_printing;
         public List<FileListItem> fli;
 
         public Tools()
         {
             //id = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            id = "722240"; // for now
-            //id = "1721277";
+            //id = "1722231"; // for now
+            id = "722242";
             machine_name = Environment.MachineName;
             com = new Communicator(id, machine_name);
             fli = new List<FileListItem>();
@@ -45,6 +46,7 @@ namespace Printer_Client
             return "nothing";
         }
         public bool isActive() { return this.is_active; }
+        public bool isCurrentlyPrinting() { return this.is_currently_printing; }
         public double totalFileSizeMax() { return max_size_total; }
         public int fileCountMax() { return max_file_count; }
 
@@ -81,6 +83,7 @@ namespace Printer_Client
             {
                 File.Copy(old_dir, new_dir, true);
                 File.Delete(old_dir);
+                
             }
             catch(Exception e){}
             return File.Exists(new_dir);
@@ -214,6 +217,7 @@ namespace Printer_Client
                         this.max_file_count = res.maxFileCount;
                         this.max_page_count = res.pgLeft;
                         this.is_active = true;
+                        this.is_currently_printing = (res.currently_printing == 1);
 
                     }
                     else if (res.status == "1" && res.active == "0")

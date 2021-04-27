@@ -24,6 +24,7 @@ namespace Printer_Client
             this.temp_dir = tool.getTempDir();
             this.hidden_dir = tool.getHiddenDir();
             isActive = tool.isActive();
+            
         }
         public static void makeFile(string dir, string text)
 
@@ -71,8 +72,8 @@ namespace Printer_Client
                 }
             }
             else Directory.CreateDirectory(dir);
-
         }
+
         public void listen()
         {
             if (this.isActive)
@@ -82,10 +83,11 @@ namespace Printer_Client
                 watcher = new FileSystemWatcher(this.temp_dir);
                 // Watch for changes in LastAccess and LastWrite times, and
                 // the renaming of files.
-                watcher.NotifyFilter = NotifyFilters.LastAccess
-                                        | NotifyFilters.LastWrite
-                                        | NotifyFilters.FileName
-                                        | NotifyFilters.DirectoryName;
+                 watcher.NotifyFilter = NotifyFilters.LastAccess
+                                         | NotifyFilters.LastWrite
+                                         | NotifyFilters.FileName
+                                         | NotifyFilters.DirectoryName;
+                //watcher.NotifyFilter = NotifyFilters.LastWrite;
 
                 // Only watch pdf files on our case.
                 watcher.Filter = "*.pdf";
@@ -115,10 +117,11 @@ namespace Printer_Client
                 Thread.Sleep(500);
                 File.Delete(old);
                 FileInsertionEvent?.Invoke(source, new FileInsertionEventArgs(new_dir));
-        }
+            }
             catch (Exception ex)
             {
                 DuplicateFileInsertionEvent?.Invoke(source, new FileInsertionEventArgs(new_dir));
+                
             }
 
 }

@@ -17,15 +17,17 @@
         echo json_encode(array("status" => '0', "msg" => "problem on server"));
         exit(0);
     }
-    else if(!$kit->_validate($data, $kit->get_punch_list())){
+    else if(!$kit->_validate($data, $kit->get_update_status_list())){
         $conObg->detach();
         echo "You fool, Get Lost";
     }
     else{
         $response = array("abort_code" => "1");
         // check user is active or not
-        $status_qry = "SELECT status, pending FROM `_user711qd9m` WHERE id = $data->id;";
-        $res = mysqli_fetch_all(mysqli_query($link, $status_qry), MYSQLI_ASSOC);
+        $abort_
+        $update_qry = "UPDATE print43er_details234c23452 pd join printe3242342r_status234232077 ps 
+        on ps.printer_id = pd.printer_id SET pd.current_status = 1 WHERE ps.u_id = 1722231;";
+        mysqli_query($link, $status_qry);
        
         http_response_code(200);
         echo json_encode($response);
