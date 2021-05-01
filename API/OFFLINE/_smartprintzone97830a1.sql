@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2021 at 11:06 PM
+-- Generation Time: May 01, 2021 at 09:22 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -60,13 +60,6 @@ CREATE TABLE `prin23422ting_queue21314` (
   `abort` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `prin23422ting_queue21314`
---
-
-INSERT INTO `prin23422ting_queue21314` (`num`, `u_id`, `p_id`, `time`, `wait_time`, `insertion_time`, `abort`) VALUES
-(1, 1721277, 1, 86, 0, '02:43:37', 0);
-
 -- --------------------------------------------------------
 
 --
@@ -90,8 +83,8 @@ CREATE TABLE `print43er_details234c23452` (
 
 INSERT INTO `print43er_details234c23452` (`printer_id`, `zone_id`, `printer_name`, `given_name`, `port`, `time_one_pg`, `driver_name`, `current_status`) VALUES
 (1, 1, 'printer_one', 'NAC Printer', 'nai', 1, 'nai', 1),
-(2, 1, 'printer_two', 'SAC Printer', 'nai', 1.5, 'nai', 2),
-(3, 1, 'printer_three', 'Another Printer', 'nai', 2, 'nai', 0);
+(2, 1, 'printer_two', 'SAC Printer', 'nai', 1.5, 'nai', 1),
+(3, 1, 'printer_three', 'Another Printer', 'nai', 2, 'nai', 1);
 
 -- --------------------------------------------------------
 
@@ -122,7 +115,7 @@ CREATE TABLE `printe3242342r_status234232077` (
 --
 
 INSERT INTO `printe3242342r_status234232077` (`printer_id`, `u_id`, `required_time`) VALUES
-(1, NULL, 86),
+(1, NULL, 0),
 (2, NULL, 0),
 (3, NULL, 0);
 
@@ -149,24 +142,6 @@ INSERT INTO `printer_status_code` (`s_code`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user2`
---
-
-CREATE TABLE `user2` (
-  `id` int(11) NOT NULL,
-  `page` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `user2`
---
-
-INSERT INTO `user2` (`id`, `page`) VALUES
-(1234, 50);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `zones`
 --
 
@@ -181,7 +156,7 @@ CREATE TABLE `zones` (
 --
 
 INSERT INTO `zones` (`zone_id`, `zone_name`, `max_capacity`) VALUES
-(1, 'NSU IT', 3);
+(1, 'NSU IT', 5);
 
 -- --------------------------------------------------------
 
@@ -28847,12 +28822,6 @@ ALTER TABLE `printe3242342r_status234232077`
 --
 ALTER TABLE `printer_status_code`
   ADD PRIMARY KEY (`s_code`);
-
---
--- Indexes for table `user2`
---
-ALTER TABLE `user2`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `zones`

@@ -7,6 +7,7 @@
         private $any_update_list = array('ip','key','machine','zone_code');
         private $punch_list = array('id','punch_time','zone_code','key','ip');
         private $wait_time_list = array('id','key','ip');
+        private $update_status_list = array('id','printer_status','key','ip');
         private $print_success_list = array('id', 'finish_flag', 'file_name', 'pg_count', 'delete_time', 'key', 'ip');
         private $server_dir = "\\\DESKTOP-5RNDV53\ServerFolder";
 
@@ -58,7 +59,7 @@
             return $this->wait_time_list;
         }
         function get_update_status_list(){
-            return $this->wait_time_list;
+            return $this->update_status_list;
         }
         function get_print_success_list(){
             return $this->print_success_list;
