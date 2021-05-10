@@ -1,9 +1,9 @@
-<nav class="sidebar sidebar-offcanvas" id="sidebar" style="background: linear-gradient(to top, #e388bf, #1a4aa1);" >
+<nav class="sidebar sidebar-offcanvas" id="sidebar" style="background: linear-gradient(to top, #8172f7, #b859f0);" >
     <ul class="nav">
         <li class="nav-item nav-profile">
             <a href="#" class="nav-link">
                 <div class="profile-image">
-                    <img class="img-xs rounded-circle" src="assets/images/faces/face8.jpg" alt="profile image">
+                    <img class="img-xs rounded-circle" src="{{asset('assets/images/faces/face8.jpg')}}" alt="profile image">
                     <div class="dot-indicator bg-success"></div>
                 </div>
                 <div class="text-wrapper">
@@ -43,18 +43,37 @@
                         <a class="nav-link" href="/view_print_setting"> Print Setting </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/"> Make Default Setting </a>
+                        <a class="nav-link" href="{{route('admin.view_zones')}}"> Zone Setting </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/"> Add Page to new User </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/"> Set Default Count </a>
+                        <a class="nav-link" href="{{route('admin.view_printer_details')}}"> Printer Details </a>
                     </li>
                 </ul>
             </div>
         </li>
         {{-----------Print System Ends----------------}}
+
+
+
+        <li class="nav-item">
+           <a class="nav-link" data-toggle="collapse" href="#print_queue" aria-expanded="false" aria-controls="print_queue">
+                <i class="menu-icon typcn typcn-document-add"></i>
+                <span class="menu-title">Print Queue</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse multi-collapse" id="print_queue">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.view_current_status_print_queue')}}"> Currently Printing </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.view_card_punched_print_queue')}}"> On Queue </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+
 
 
         {{-----------Manage Admins Starts--------------}}
@@ -72,27 +91,10 @@
 
         {{-----------Manage Students Starts--------------}}
         <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#manage_student" aria-expanded="false" aria-controls="manage_student">
-                <i class="menu-icon typcn typcn-document-add"></i>
-                <span class="menu-title">Manage Students</span>
-                <i class="menu-arrow"></i>
+            <a class="nav-link" href="{{route('admin.goto_search_student_page')}}">
+                <i class="menu-icon typcn typcn-document-text"></i>
+                <span class="menu-title">Manage Student</span>
             </a>
-            <div class="collapse multi-collapse" id="manage_student">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/"> Add New Student</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/"> Remove Student</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/"> Deactivate Student </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/"> Active Student </a>
-                    </li>
-                </ul>
-            </div>
         </li>
         {{-----------Manage Students Ends----------------}}
 
@@ -101,7 +103,7 @@
 
 
         {{-----------View Admin History Starts--------------}}
-        <li class="nav-item">
+        {{--<li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#view_admin_history" aria-expanded="false" aria-controls="view_admin_history">
                 <i class="menu-icon typcn typcn-document-add"></i>
                 <span class="menu-title">View Admin History</span>
@@ -117,14 +119,14 @@
                     </li>
                 </ul>
             </div>
-        </li>
+        </li>--}}
         {{-----------View Admin History Ends----------------}}
 
 
 
 
         {{-----------View Student History Starts--------------}}
-        <li class="nav-item">
+        {{--<li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#view_student_history" aria-expanded="false" aria-controls="view_student_history">
                 <i class="menu-icon typcn typcn-document-add"></i>
                 <span class="menu-title">View Student History</span>
@@ -143,7 +145,7 @@
                     </li>
                 </ul>
             </div>
-        </li>
+        </li>--}}
         {{-----------View Student History Ends----------------}}
 
 

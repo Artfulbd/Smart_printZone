@@ -83,7 +83,7 @@ class Print_Queue extends Controller
         $student = Student::find($user_id);
         $student->pending = $student->pending-1;
         $student->save();
-        
+
         if($response)
             return redirect('/print_queue')->with('success','File Deleted Successfully');
         else

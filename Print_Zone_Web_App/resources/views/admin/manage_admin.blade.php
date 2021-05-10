@@ -7,7 +7,7 @@
                 @if($data['found'])
                     <p class="card-description"><code class="text-success">Available Admins</code></p>
                 @else
-                    <p class="card-description"><code class="text-danger">No Admin is created till now</code></p>
+                    <p class="card-description"><code class="text-danger">No User Admin is created till now</code></p>
                 @endif
                 <div class="row mt-2 mb-4 mr-1">
                     <button class="btn btn-info ml-sm-auto" data-toggle="modal" data-target="#create_admin_modal">Create New Admin</button>

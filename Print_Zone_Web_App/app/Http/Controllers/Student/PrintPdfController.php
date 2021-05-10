@@ -60,7 +60,7 @@ class PrintPdfController extends Controller
 
 
         // Checking Max File Upload Limit crossed or not
-        if($pending_file_count > $max_file_count)
+        if($pending_file_count >= $max_file_count)
             return redirect('/print_pdf')->with('error','You cannot upload more than '.$max_file_count.' files at a time !');
 
 

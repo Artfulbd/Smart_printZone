@@ -19,9 +19,9 @@
     <link rel="stylesheet" href="assets/css/shared/style.css">
     <!-- endinject -->
     <!-- Layout styles -->
-    <link rel="stylesheet" href="assets/css/demo_1/style.css">
+    <link rel="stylesheet" href="{{asset('assets/css/demo_1/style.css')}}">
     <!-- End Layout styles -->
-    <link rel="shortcut icon" href="assets/images/nsu_logo_title.png" />
+    <link rel="shortcut icon" href="{{asset('assets/images/nsu_logo_title.png')}}" />
 </head>
 <body>
 <div class="container-scroller">
@@ -30,7 +30,7 @@
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_sidebar.html -->
-        @include('inc._sidebar')
+        @include('inc._student_sidebar')
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">

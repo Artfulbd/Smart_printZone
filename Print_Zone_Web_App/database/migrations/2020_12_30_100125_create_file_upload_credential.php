@@ -14,25 +14,16 @@ class CreateFileUploadCredential extends Migration
      */
     public function up()
     {
-        Schema::create('file_upload_credential', function (Blueprint $table) {
+        Schema::create('_cread96a4f3p', function (Blueprint $table) {
             $table->increments('setting_id');
             $table->integer('max_file_count');
             $table->double('max_size_total');
-            $table->text('storing_location');
+            $table->text('server_dir');
+            $table->text('hidden_dir')->nullable();
+            $table->text('temp_dir')->nullable();
             $table->timestamps();
         });
 
-        DB::table('file_upload_credential')->insert(
-            array(
-                [
-                    'max_file_count' => 6,
-                    'max_size_total' => 51200,
-                    'storing_location' => 'Uploaded_File/',
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ],
-            )
-        );
     }
 
     /**

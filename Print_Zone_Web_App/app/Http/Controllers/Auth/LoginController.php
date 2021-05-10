@@ -38,7 +38,7 @@ class LoginController extends Controller
             return $this->redirectTo;
         }
 
-        if (strtolower(auth()->user()->role) == 'super_admin') {
+        /*if (strtolower(auth()->user()->role) == 'super_admin') {
 
             $this->redirectTo = '/admin_landing';
             return $this->redirectTo;
@@ -51,10 +51,10 @@ class LoginController extends Controller
 
             $this->redirectTo = '/student_landing';
             return $this->redirectTo;
-        }
+        }*/
 
 
-        $this->redirectTo = '/';
+        $this->redirectTo = '/admin_landing';
         return $this->redirectTo;
     }
     /**

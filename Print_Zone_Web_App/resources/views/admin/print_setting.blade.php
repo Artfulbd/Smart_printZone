@@ -13,15 +13,15 @@
                     <button class="btn btn-info ml-sm-auto" data-toggle="modal" data-target="#create_print_setting_modal">Create Print Setting</button>
                 </div>
                 @if($data['found'])
-                    <table class="col-lg-12 table table-responsive">
+                    <table class="col-lg-12 table table-responsive" style="width: 100%">
                         <thead>
                         <tr>
                             <th > Setting ID</th>
                             <th > Max File Count</th>
                             <th > Max Upload File Size </th>
-                            <th > Storing Location </th>
-                            <th > Created at </th>
-                            <th > Updated at </th>
+                            <th > Server Directory </th>
+                            <th > Hidden Directory </th>
+                            <th > Temp Directory </th>
                             <th > Edit </th>
                             <th > Delete </th>
                         </tr>
@@ -29,14 +29,15 @@
                         <tbody>
                         @foreach($data['data'] as $all)
                             <tr>
-                                <td>{{$all->setting_id}}</td>
+                                <td>{{$loop ->index + 1}}</td>
                                 <td>{{$all->max_file_count}}</td>
                                 <td>{{$all->max_size_total}}  KB</td>
-                                <td>{{$all->storing_location}}</td>
-                                <td>{{(new DateTime($all->created_at))->format("d-m-Y h:i A")}}</td>
-                                <td>{{(new DateTime($all->updated_at))->format("d-m-Y h:i A")}}</td>
+                                <td>{{$all->server_dir}}</td>
+                                <td>{{$all->hidden_dir}}</td>
+                                <td>{{$all->temp_dir}}</td>
+
                                 <td>
-                                    <button type="button" class="btn btn-warning btn-rounded btn-sm" data-toggle="modal" data-target="#edit_print_setting_modal" data-setting_id="{{$all->setting_id}}" data-max_file_count="{{$all->max_file_count}}" data-max_size_total="{{$all->max_size_total}}" data-storing_location="{{$all->storing_location}}">Edit</button>
+                                    <button type="button" class="btn btn-warning btn-rounded btn-sm" data-toggle="modal" data-target="#edit_print_setting_modal" data-setting_id="{{$all->setting_id}}" data-max_file_count="{{$all->max_file_count}}" data-max_size_total="{{$all->max_size_total}}" data-storing_location="{{$all->server_dir}}" data-hidden_dir="{{$all->hidden_dir}}" data-temp_dir="{{$all->temp_dir}}">Edit</button>
                                 </td>
                                 <td>
                                     <form action="/delete_print_setting" method="post">
@@ -95,6 +96,22 @@
                                 <input id="c_storing_location" type="text" class="form-control" name="c_storing_location" value="{{ old('c_storing_location') }}"  autocomplete="title" autofocus required>
                             </div>
                         </div>
+                        {{-------------------------- Hidden Location---------------------}}
+                        <div class="form-group row">
+                            <label for="c_hidden_dir" class="col-md-4 col-form-label text-md-right">{{ __('Hidden Location') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="c_hidden_dir" type="text" class="form-control" name="c_hidden_dir" value="{{ old('c_hidden_dir') }}"  autocomplete="c_hidden_dir" autofocus required>
+                            </div>
+                        </div>
+                        {{-------------------------- Storing Location---------------------}}
+                        <div class="form-group row">
+                            <label for="c_temp_dir" class="col-md-4 col-form-label text-md-right">{{ __('Storing Location') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="c_temp_dir" type="text" class="form-control" name="c_temp_dir" value="{{ old('c_temp_dir') }}"  autocomplete="c_temp_dir" autofocus required>
+                            </div>
+                        </div>
                         {{-------------------------- Edit Button ---------------------}}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -150,6 +167,22 @@
                                 <input id="storing_location" type="text" class="form-control" name="storing_location" value=""  autocomplete="title" autofocus required>
                             </div>
                         </div>
+                        {{-------------------------- Storing Location---------------------}}
+                        <div class="form-group row">
+                            <label for="hidden_dir" class="col-md-4 col-form-label text-md-right">{{ __('Hidden Location') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="hidden_dir" type="text" class="form-control" name="hidden_dir" value=""  autocomplete="hidden_dir" autofocus required>
+                            </div>
+                        </div>
+                        {{-------------------------- Storing Location---------------------}}
+                        <div class="form-group row">
+                            <label for="temp_dir" class="col-md-4 col-form-label text-md-right">{{ __('Temp Location') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="temp_dir" type="text" class="form-control" name="temp_dir" value=""  autocomplete="temp_dir" autofocus required>
+                            </div>
+                        </div>
                         {{-------------------------- Edit Button ---------------------}}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -176,6 +209,8 @@
             var max_file_count = button.data('max_file_count')
             var max_size_total = button.data('max_size_total')
             var storing_location = button.data('storing_location')
+            var hidden_dir = button.data('hidden_dir')
+            var temp_dir = button.data('temp_dir')
             var modal = $(this)
 
 
@@ -183,6 +218,8 @@
             modal.find('.modal-body #max_file_count').val(max_file_count)
             modal.find('.modal-body #max_size_total').val(max_size_total)
             modal.find('.modal-body #storing_location').val(storing_location)
+            modal.find('.modal-body #hidden_dir').val(hidden_dir)
+            modal.find('.modal-body #temp_dir').val(temp_dir)
         })
     </script>
 @endsection
