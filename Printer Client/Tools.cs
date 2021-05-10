@@ -33,7 +33,7 @@ namespace Printer_Client
         {
             //id = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             //id = "1722231"; // for now
-            id = "722242";
+            id = "722240";
             machine_name = Environment.MachineName;
             com = new Communicator(id, machine_name);
             fli = new List<FileListItem>();
