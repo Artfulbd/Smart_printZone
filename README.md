@@ -1,5 +1,30 @@
-# Smart_printZone
+# NSU Smart_printZone
 -RFID
 -Web app;php
 -Server app;c#
 -clint app(desktop);c#
+
+
+NSU has a print zone consist of 100 PC (offline) and two (black and white) laser printer, connected with LAN (series). Any NSU student can print from those PCs, after logging in with NSU ID and dedicated password. Every Semester they got free 200 page to print (everyone). Within a semester, if they run out of that page limit, they can renew it by paying 100 taka (100 page) to NSU recognized bank (UCB). There is a software called “Papercut”, which is used (by NSU IT) to maintain those page limits and other authentication stuffs. The system is good so far.
+But there are some issues. All students can print together at same time, and there is no queue to be maintained. All document prints together after getting print command. As a result, student often faces hassle on finding their own document, form pile of all printed documents, which costs a lot of time. Specially during rush hour, it produces a huge crowd on our Print zone. Also, there are some other issues as well.
+Our idea is to develop such a system, which can handle those issues and add additional time and cost saving features to it. As NSU has RFID card, on our proposed system will take advantage from it. 
+Main Idea is, user will print document as they did before. Additionally, there will be RFID card reader attached to our printers. Here, documents will not be printed directly after getting print command from PC. Our system will hold it. After giving print command, user will sign out their account and go beside printer, punch his/her NSU id card, after that, printer will print only that users document, immediately.  So, there will be no pile of printed documents. Here, theoretically user will bound to maintain a queue on their own. First come (to printer) first serve.
+Now comes the additional feature, every NSUers has their RDS account. Our proposed printing system will be connected to it. User will upload their documents to print account, through RDS. Whenever user punch their card from printer, there document will be printed immediately. Means our printing system will be available online. They can upload document from home, and print it from University. They can check there printing status (page left, total printed page and many more) on RDS. They can use their phone, so the printing job will be more flexible and fun. 
+One remarkable feature of our system is, it doesn’t require any additional dedicated RFID printer (cost around 8 lac taka each), existed printers will be sufficient for it. Only additional RFID receiver will be needed as our design. Our software will handle those matching and mapping job. Not additional hardware, means no need of additional human resource to handle the system. Our existed manpower will be sufficient enough. 
+Yes, there will be many drawbacks, our software will handle those. For example, bad user can try to upload tempered (effected) documents, but our system will check every document before doing upload job. And so on.
+
+Find the diagram as Documentation/Idea.pdf
+ 
+Diagram details
+Here is a short details of our designed system (components)-
+1.	Main RFID engine: This is the core system (an ordinary PC with 16GB or more RAM and more than 8 core), which will be responsible for handling all print request and binding RFID punches to desired documents. Basically, it will be available offline, but it will maintain communication with file handler (which will be online) [refer to 8]. We don’t need a dedicated server PC here, because that will be over whelming for our need. 
+2.	Printer: This is our normal printer. It will be connected to RFID engine According to our design, N number of new printers can be added here. (where 0<N<10). Our IT department is thinking of adding more printer on print zone and as well as on our Lounges. That will reduce pressure on print zone.
+3.	Print Zone PC: Our ordinary PCs, located on print zone, usually we do print from those. (around 100 in count)
+4.	Temporary Storage: This is basically a data storage (HHD/SSD) inside Main RFID engine PC. Requested documents (online/offline) will be stored here temporarily, as user punch their card, document will be printed immediately. As actual document will be on Print Zone pc(offline) or on RDS (online). During punch if the document is not available on this storage, then it must be downloaded from source (online/offline), which will generate time overhead. So, this storing is required to make printing job faster. Max 2TB storage will be sufficient. There is a good chance of generating some storage leak, our system design will handle it.
+5.	RFID reader: Usual RFID reader, as we see beside every NSU classroom door. There will be one reader for each printer, attached to it.
+6.	Main RDS system: Our as usual RDS system, to make printing system available online, our designed system will be connected to it. Just some API call, to make it accessible from RDS portal.
+7.	Web app (RDS): Our as usual RDS web app (user interface).
+8.	File Handler: RDS system will just redirect any print related request to it. Technically it is the main online part of our proposed system. It will handle online validation and uploading job. Also, will track printing status to make users print details available online. Also, it will maintain communication with Main RFID Engine to track live updates.
+9.	Cloud storage: It is another temporary storage like [4], what we mentioned earlier. Difference is, it will be an online storage rather than offline. It will store all online uploads temporarily. RFID engine [1] will request for any user’s document to File Handler, and Handler will transfer that file/files from this Cloud Storage. 
+
+There will be three different software for the system, Client app (offline), Server app (offline) and Web app (online). Client app is for Print zone PC, will be written on C#. Server app for Main RFID engine, written in Java or C#. Web app and all API will be written on PHP. 
